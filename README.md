@@ -61,7 +61,8 @@ Download the following files from Opendatasoft and place them in your dataFolder
 - 1.5 million postal codes from https://public.opendatasoft.com/explore/dataset/geonames-postal-code/export/ (download the CSV file)
 
 Optionally download houses information Openstreetdata. More houses files means better accuracy, but larger memory consumption. The geoservice has been tested with all houses files from Openstreetdata, which are 109 million house addresses.
-- Download the houses files from https://openstreetdata.org/#addresses. The streets and addresses files are not needed. Unzip the *-houses.tsv.gz to *.houses.tsv and copy them to the dataFolder.
+- Download the houses files from https://openstreetdata.org/#addresses. The streets and addresses files are not needed.
+- Unzip the `*-houses.tsv.gz` to `*.houses.tsv` and copy them to the dataFolder.
 
 # For the nerds
 
