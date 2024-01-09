@@ -3,8 +3,8 @@ package com.jeltechnologies.geoservices.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jeltechnologies.geoservices.Configuration;
-import com.jeltechnologies.geoservices.Environment;
+import com.jeltechnologies.geoservices.config.Configuration;
+import com.jeltechnologies.geoservices.config.Environment;
 import com.jeltechnologies.geoservices.database.Database;
 import com.jeltechnologies.geoservices.utils.JMXUtils;
 
@@ -18,7 +18,6 @@ public class ContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
 	try {
 	    Configuration config = Environment.getConfiguration();
-	    LOGGER.info(config.toString());
 	    Database database = new Database();
 	    database.initDatabase(config.refreshOpenStreetDataCSV());
 	    database.close();

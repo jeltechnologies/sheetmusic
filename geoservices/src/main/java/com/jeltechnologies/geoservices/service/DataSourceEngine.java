@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jeltechnologies.geoservices.Configuration;
+import com.jeltechnologies.geoservices.config.Configuration;
 import com.jeltechnologies.geoservices.datamodel.AddressRequest;
 import com.jeltechnologies.geoservices.datamodel.Answer;
 import com.jeltechnologies.geoservices.datamodel.Coordinates;
@@ -54,8 +54,6 @@ public class DataSourceEngine implements DataSourceEngineMBean {
     private LocationFilter postalCodes;
 
     private Map<Country, HouseLocationFilter> houses = new HashMap<Country, HouseLocationFilter>();
-
-    private final File dataFolder;
 
     private AtomicBoolean readyForService = new AtomicBoolean(false);
     
@@ -106,15 +104,10 @@ public class DataSourceEngine implements DataSourceEngineMBean {
 	this.configuration = configuration;
 	this.executor = Executors.newFixedThreadPool(configuration.threadPool());
 	context.setAttribute(DataSourceEngine.class.getName(), this);
-	if (configuration.useCache()) {
+	if (configuration.cache().useCache()) {
 	    this.locationCache = new GeoLocationCache(configuration.cache(), scheduledExecutorService);
 	} else {
 	    this.locationCache = null;
-	}
-
-	this.dataFolder = new File(configuration.dataFolder());
-	if (!dataFolder.isDirectory()) {
-	    throw new IOException("Data folder " + configuration.dataFolder() + " is not a directory");
 	}
 	executor.execute(new Runnable() {
 	    @Override
@@ -158,18 +151,27 @@ public class DataSourceEngine implements DataSourceEngineMBean {
 	return (DataSourceEngine) context.getAttribute(DataSourceEngine.class.getName());
     }
 
-    private InputStream getStream(String name) throws IOException {
+    private InputStream getStreamFromFile(String name) throws IOException {
+	File dataFolder = new File(configuration.dataFolder());
 	File file = new File(dataFolder.getAbsolutePath() + "/" + name);
 	FileInputStream in = new FileInputStream(file);
 	return in;
     }
+    
+    private InputStream getStreamFromResource(String name) throws IOException {
+	return DataSourceEngine.class.getResourceAsStream("/" + name);
+    }
 
     private List<LocationFilter> init() throws SQLException, IOException, InterruptedException {
-	countries = new CountryMap(getStream("countrycodes.json"));
+	countries = new CountryMap(getStreamFromResource("countrycodes.json"));
 	List<LocationFilter> datasources = new ArrayList<LocationFilter>();
-	cities = new CityLocationFilter(getStream("geonames-all-cities-with-a-population-1000.csv"), countries);
+	
+	// Download at https://public.opendatasoft.com/explore/dataset/geonames-all-cities-with-a-population-1000/table/?disjunctive.cou_name_en&sort=name
+	cities = new CityLocationFilter(getStreamFromFile("geonames-all-cities-with-a-population-1000.csv"), countries);
 	datasources.add(cities);
-	postalCodes = new PostalCodesLocationFilter(getStream("geonames-postal-code.csv"), countries);
+	
+	// Download at https://public.opendatasoft.com/explore/dataset/geonames-postal-code/export/
+	postalCodes = new PostalCodesLocationFilter(getStreamFromFile("geonames-postal-code.csv"), countries);
 	datasources.add(postalCodes);
 	addOpenStreetSources();
 	for (Country c : houses.keySet()) {
@@ -179,8 +181,8 @@ public class DataSourceEngine implements DataSourceEngineMBean {
     }
 
     private void addOpenStreetSources() throws SQLException, IOException, InterruptedException {
-	File housesFolder = new File(dataFolder.getAbsolutePath() + "/houses");
-	File[] streetFiles = housesFolder.listFiles(new FilenameFilter() {
+	File dataFolder = new File(configuration.dataFolder());
+	File[] streetFiles = dataFolder.listFiles(new FilenameFilter() {
 	    @Override
 	    public boolean accept(File dir, String name) {
 		return name.endsWith("-houses.tsv");

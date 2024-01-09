@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jeltechnologies.geoservices.CacheConfiguraton;
+import com.jeltechnologies.geoservices.config.CacheConfiguraton;
 import com.jeltechnologies.geoservices.datamodel.AddressRequest;
 import com.jeltechnologies.geoservices.datamodel.Coordinates;
 import com.jeltechnologies.geoservices.utils.JMXUtils;
