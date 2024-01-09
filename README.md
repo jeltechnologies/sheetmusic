@@ -20,7 +20,7 @@ It is of course also possible to simply call the web service directly. Use the m
 The project geoservice-datamodel contains Java classes for this service. This may come handy for Java clients of the web service.  
 
 ## Accuracy
-The accuracy of the service varies per country. The accuracy is excellent in North America, China and in most European countries the accuracy is very good. In some countries like Sweden, the accuracy is less good, because there is less quality open data available.
+The accuracy of the service varies per country. The accuracy is excellent in North America, China and  most European countries. There are exceptions, for example for Sweden, the accuracy is less good, because there is less quality open data available.
 
 # Installation and configuration
 To run thw web service you will need:
