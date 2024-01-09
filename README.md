@@ -1,10 +1,7 @@
 This project is a web service that provides the address from coordinates.
 
-Fill out latitude and longitude in the form
 ![geoservice-ui](https://github.com/jeltechnologies/geoservices/assets/153366704/d64a41e8-b9ae-4841-bfa3-060d8a43c5c6)
-Change the URL to where the web service is deployed, for example http://localhost:8080/geoservices
 
-The REST response in JSON is shown below
 ![geoservice-rest](https://github.com/jeltechnologies/geoservices/assets/153366704/3ae5b373-c117-4831-9b8b-911c72258397)
 Change the URL to where the web service is deployed, for example http://localhost:8080/geoservices
 
