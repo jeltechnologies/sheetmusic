@@ -74,7 +74,7 @@ The first time the application runs, it will read all .tsv files and insert them
 After this the next startup will take just a few minutes. To force a reload of the .tsv files, you may set `refreshOpenStreetDataCSV` to `true` in the YAML file, or simply drop all database tables and restart the web service.
 
 ## Memory usage
-Coordinates are kept in memory, 109 million house addresses will take around 8 GB of heap memory. To reduce memory usage, siomply remove houses files you do not need. 
+Coordinates are kept in memory, 109 million house addresses will take around 8 GB of heap memory. To reduce memory usage, simply remove houses files you do not need. 
 
 
 
