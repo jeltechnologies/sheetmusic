@@ -26,8 +26,8 @@ public class GeoServiceServlet extends BaseServlet {
 	if (latlonString != null && !latlonString.isBlank()) {
 	    String[] parts = latlonString.split(",");
 	    if (parts.length == 2) {
-		latString = parts[0];
-		lonString = parts[1];
+		latString = parts[0].trim();
+		lonString = parts[1].trim();
 	    }
 	}
 	if (latString == null) {

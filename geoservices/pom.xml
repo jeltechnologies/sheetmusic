@@ -79,6 +79,7 @@
 				<directory>src/main/java</directory>
 				<includes>
 					<include>logback.xml</include>
+					<include>countrycodes.json</include>
 				</includes>
 			</resource>
 		</resources>

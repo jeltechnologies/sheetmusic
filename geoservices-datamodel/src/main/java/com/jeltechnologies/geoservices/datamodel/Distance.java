@@ -3,7 +3,7 @@ package com.jeltechnologies.geoservices.datamodel;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public record Distance(double exact, int kilometrs, int hectometres, int metres) {
+public record Distance(double exact, int kilometers, int hectometres, int metres) {
 
     private static final BigDecimal TEN = new BigDecimal(10);
     private static final BigDecimal THOUSAND = new BigDecimal(1000);

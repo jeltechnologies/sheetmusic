@@ -24,7 +24,9 @@ public class ContextListener implements ServletContextListener {
 	    new DataSourceEngine(config, servletContextEvent.getServletContext());
 	    LOGGER.info("Service deployed");
 	} catch (Exception e) {
-	    throw new IllegalStateException("Cannot start web app because " + e.getMessage(), e);
+	    String message = "Cannot start web application because " + e.getMessage();
+	    LOGGER.error(message, e);
+	    throw new IllegalStateException(message, e);
 	}
     }
 
