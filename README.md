@@ -23,7 +23,7 @@ The project geoservice-datamodel contains Java classes for this service. This ma
 The accuracy of the service varies per country. The accuracy is excellent in North America, China and  most European countries. There are exceptions, for example for Sweden, the accuracy is less good, because there is less quality open data available.
 
 # Installation and configuration
-To run thw web service you will need:
+To run the geoservice you will need:
 - A Java web container, preferably Apache Tomcat
 - PostgreSQL database server, which will be used to store more than 100 million addresses. Create an empty database with the name "geoservices"
 - Download the PostgrSQL JDBC driver (https://jdbc.postgresql.org/), which must be placed in tomcat/lib
