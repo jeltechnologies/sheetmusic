@@ -11,12 +11,13 @@ The web service comes with a simple web page, for testing puproses. Here you fil
 
 Then web service responds in JSON
 ![geoservice-rest](https://github.com/jeltechnologies/geoservices/assets/153366704/3ae5b373-c117-4831-9b8b-911c72258397)
-Change the URL to where the web service is deployed, for example http://localhost:8080/geoservices
-It is of course also possible to simply call the web service directly.
+Change the URL to where the web service is deployed, for example `http://localhost:8080/geoservices`.
 
-Use the method `GET` with following parameters for the web service: 
+It is of course also possible to simply call the web service directly. Use the method `GET` with following parameters for the web service: 
 - `latitude` for the latutide and `longitude` for longitude or
 - `latlon` for a comma seperated latitude and longitude
+
+The project geoservice-datamodel contains Java classes for this service. This may come handy for Java clients of the web service.  
 
 # Installation and configuration
 To run thw web service you will need:
