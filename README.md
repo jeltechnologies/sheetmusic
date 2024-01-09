@@ -2,8 +2,8 @@
 This project is a web service that provides the address from coordinates.
 
 ## Why would I need this?
-This address information is also possible to fetch from paid web services, or from web services that throttle the requests.
-By deploying the service on your home server you can use it without limits or cloud costs.
+This address information is also possible to fetch from paid web services, or from web services that throttle the requests. So why would you need this web service?
+With this service you can use geolocation information without limits and (cloud) costs, especially when running it on a home server.
 
 ## How does it work?
 The web service comes with a simple web page, for testing puproses. Here you fill out coordinates
