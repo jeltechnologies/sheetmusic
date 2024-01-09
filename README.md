@@ -2,8 +2,8 @@
 This project is a web service that provides the address from coordinates.
 
 ## Why would I need this?
-This address information is also possible to fetch from paid web services, or from web services that throttle the requests. So why would you need this web service?
 With this service you can use geolocation information without limits and (cloud) costs, especially when running it on a home server.
+Address information is also possible to fetch from paid web services, or from web services that throttle the requests to 1 request per second. 
 
 ## How does it work?
 The web service comes with a simple web page, for testing puproses. Here you fill out coordinates
@@ -18,6 +18,9 @@ It is of course also possible to simply call the web service directly. Use the m
 - `latlon` for a comma seperated latitude and longitude
 
 The project geoservice-datamodel contains Java classes for this service. This may come handy for Java clients of the web service.  
+
+## Accuracy
+The accuracy of the service varies per country. The accuracy is excellent in North America, China and in most European countries the accuracy is very good. In some countries like Sweden, the accuracy is less good, because there is less quality open data available.
 
 # Installation and configuration
 To run thw web service you will need:
