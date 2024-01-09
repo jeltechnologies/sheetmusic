@@ -67,7 +67,7 @@ Optionally download houses information Openstreetdata. More houses files means b
 # For the nerds
 
 ## Performance
-The performance depends on the CPU used. The system is designed to supports multiple requests in parallel. Threading is handled by the web container and/or cloud infrastructure. To improve performance for lookups of series of pictures taken at the same location, the service comes with its own cache. This cache is configured in the YAML file.
+The performance depends on the CPU used. The system is designed to supports multiple requests in parallel. Threading is handled by the web container and/or cloud infrastructure. A built-in cache is used to improve performance for lookups of series of pictures taken at the same location. This cache is configured in the YAML file.
 
 ## Startup performance
 The first time the application runs, it will read all .tsv files and insert them into the PostgreSQL database. This can take around 30 minutes to complete. 
