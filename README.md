@@ -5,8 +5,7 @@ This project is a web service that provides the address from coordinates.
 With this service you can use geolocation information for free, without limits.
 You can run this service self-hosted, on your own server, or in the cloud.
 
-Address information is also possible to fetch from paid web services, or from web services that throttle the requests to 1 request per second. 
-But these cloud service easily cost 30 € per month, while cloud storage is also not cheap.
+Cloud services that provide the same service limit require sign up, thrhttole requests to 1 per second and cost easily 30 € per months. The cheaper cloud services most likely use the same data sources as this service.
 
 ## How does it work?
 The address service is provided as REST interface with a JSON payload.
