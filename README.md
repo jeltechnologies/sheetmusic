@@ -27,30 +27,13 @@ The accuracy of the service varies per country. The accuracy is excellent in Nor
 # Installation and configuration
 To run the geoservice you will need:
 - A Java web container, preferably Apache Tomcat
-- PostgreSQL database server, which will be used to store more than 100 million addresses. Create an empty database with the name "geoservices"
-- Download the PostgrSQL JDBC driver (https://jdbc.postgresql.org/), which must be placed in tomcat/lib
-- Create a JNDI resource to the PostgreSQL database with the name `jdbc/geoservices`. This is configured in Tomcat in conf/context.xml. 
-- Example context.xml:
- ```
-  <Resource 
-		name="jdbc/geoservices" 
-		auth="Container"
-		type="javax.sql.DataSource" 
-		username="******"
-		password="******" 
-		url="jdbc:postgresql://<server:port>/geoservices"
-		driverClassName="org.postgresql.Driver"
-		initialSize="10" 
-		maxTotal="25"
-		maxIdle="5"
-		defaultAutoCommit="false"
-	/>
-  ```
+- Clone the repository and use Maven to build the projects `geoservices-datamodel` and `geoservices`.
 
 ## Configuration
 - Create a YAML file with the following contents, change the dataFolder to the location where you store the data files.
 - ```
   dataFolder: C:\Projects\Geoservices\data
+  useDatabase: false
   refreshOpenStreetDataCSV: false
   cache:
     useCache: true
@@ -69,9 +52,20 @@ Download the following files from Opendatasoft and place them in your dataFolder
 - 1.5 million postal codes from https://public.opendatasoft.com/explore/dataset/geonames-postal-code/export/ (download the CSV file)
 
 ## Openstreetdata
-The geoservice has been tested with all houses files from Openstreetdata, which are 109 million house addresses. Optionally download houses information Openstreetdata. More houses files means better accuracy, but larger memory consumption. 
+Optionally download houses information Openstreetdata to receive more detailed address information. 
 - Download the houses files from https://openstreetdata.org/#addresses. The streets and addresses files are not needed.
 - Unzip the `*-houses.tsv.gz` to `*.houses.tsv` and copy them to the dataFolder.
+More houses files means better accuracy, but larger memory consumption. The geoservice has been tested with all houses files from Openstreetdata, which are 109 million house addresses. 
+
+### Database 
+By default all streets are loaded in memory. To reduce the memory consumption it is possible to use PostgreSQL to store the house address information.
+
+Should you use the database or not? It depends on the country.
+- United States (31 million addresses): Without PostgreSQL: 13 GB memory. With PostgresSQL: 2 GB memory
+- The Netherlands (10 million address). Without PostgreSQL:  4 GB memory. With PostgresQL : 1 GB memory
+- All countries will take around 8 GB when PostgreSQL is used.
+
+- 
 
 # For the nerds
 
