@@ -98,7 +98,7 @@ Follow these steps to install and configure PostgrSQL:
 ## Performance
 The performance depends on the CPU used. The system is designed to supports multiple requests in parallel. Threading is handled by the web container and/or cloud infrastructure.  
 
-A built-in cache is used to improve performance for lookups of series of pictures taken at the same location. This cache is configured in the YAML file.
+A built-in cache is used to improve performance for lookups of the same coordinates. This useful for getting address information for large batches of photos and videos. Often pictures are taken at the same location, for example at home or in your favorite bar, church or library. The cache is configured in the YAML file.
 
 ## Startup performance
 When the service starts, all .tsv files are loaded. If the database is used then they will be inserted into the PostgreSQL database. This can take around 30 minutes to complete. The next time the service is started within a few minutes when the database is used. 
