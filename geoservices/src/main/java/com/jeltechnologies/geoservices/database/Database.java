@@ -231,7 +231,7 @@ public class Database {
 		if (Thread.interrupted()) {
 		    throw new InterruptedException();
 		}
-		GeoCoordinates geoCoordinates = new GeoCoordinates(rs.getInt(1), rs.getFloat(2), rs.getFloat(3));
+		GeoCoordinates geoCoordinates = new GeoCoordinates(rs.getInt(1), rs.getDouble(2), rs.getDouble(3));
 		result.add(geoCoordinates);
 	    }
 	    if (LOGGER.isTraceEnabled()) {
