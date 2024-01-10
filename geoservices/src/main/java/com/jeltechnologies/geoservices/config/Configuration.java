@@ -12,7 +12,7 @@ public record Configuration(
 	if (dataFolder == null) {
 	    throw new IllegalArgumentException("dataFolder must be set");
 	}
-	final boolean USE_DATABASE = true;
+	final boolean USE_DATABASE = true; 
 	final boolean USE_CACHE = true;
 	final boolean SEARCH_ALL_HOUSES = false;
 	final int MAX_CACHE_SIZE = 100000;
