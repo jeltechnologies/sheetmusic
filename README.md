@@ -97,10 +97,12 @@ Follow these steps to install and configure PostgrSQL:
 
 ## Performance
 The performance depends on the CPU used. The system is designed to supports multiple requests in parallel. Threading is handled by the web container and/or cloud infrastructure.  
+
 A built-in cache is used to improve performance for lookups of series of pictures taken at the same location. This cache is configured in the YAML file.
 
 ## Startup performance
-When the service starts, all .tsv files are loaded. If the database is used then they will be inserted into the PostgreSQL database. This can take around 30 minutes to complete. The next time the service is started within a few minutes when the database is used. To force a reload of the .tsv files, you may set `refreshOpenStreetDataCSV` to `true` in the YAML file, or simply drop all database tables and restart the web service.
+When the service starts, all .tsv files are loaded. If the database is used then they will be inserted into the PostgreSQL database. This can take around 30 minutes to complete. The next time the service is started within a few minutes when the database is used. 
+To force a reload of the .tsv files, you may set `refreshOpenStreetDataCSV` to `true` in the YAML file, or simply drop all database tables and restart the web service.
 
 ## Memory usage
 To reduce memory usage, simply remove houses files you do not needed, or use PostgreSQL. Don't forget to redeploy the WAR file, or restart Tomcat after adding or removing files.
