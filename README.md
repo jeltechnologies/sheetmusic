@@ -1,4 +1,4 @@
-# About Geoservices
+# Get the address from coordinates
 This project is a web service that provides the address from coordinates.
 
 ## Why would I need this?
