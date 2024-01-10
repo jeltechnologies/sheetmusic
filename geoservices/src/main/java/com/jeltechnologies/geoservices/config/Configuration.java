@@ -2,6 +2,7 @@ package com.jeltechnologies.geoservices.config;
 
 public record Configuration(
 	String dataFolder,
+	Boolean useDatabase,
 	int threadPool,
 	Boolean searchAllHouses,
 	Boolean refreshOpenStreetDataCSV,
@@ -11,6 +12,7 @@ public record Configuration(
 	if (dataFolder == null) {
 	    throw new IllegalArgumentException("dataFolder must be set");
 	}
+	final boolean USE_DATABASE = true;
 	final boolean USE_CACHE = true;
 	final boolean SEARCH_ALL_HOUSES = false;
 	final int MAX_CACHE_SIZE = 100000;
@@ -19,6 +21,10 @@ public record Configuration(
 	final boolean REFRESH_OPENSTREETDATA_CSV = false;
 	final int THREADPOOL = 15;
 
+	if (useDatabase == null) {
+	    useDatabase = USE_DATABASE;
+	}
+	
 	if (searchAllHouses == null) {
 	    searchAllHouses = SEARCH_ALL_HOUSES;
 	}

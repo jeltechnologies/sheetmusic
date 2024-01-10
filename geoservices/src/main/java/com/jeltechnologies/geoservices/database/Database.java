@@ -22,7 +22,7 @@ import com.jeltechnologies.geoservices.datasources.house.GeoCoordinates;
 import com.jeltechnologies.geoservices.datasources.house.GeoFile;
 import com.jeltechnologies.geoservices.datasources.house.GeoHouse;
 
-public class Database {
+public class Database implements HouseDataSource {
     private static final Logger LOGGER = LoggerFactory.getLogger(Database.class);
 
     private final static String JNDI_DATASOURCE_NAME = "java:/comp/env/jdbc/geoservices";
@@ -31,7 +31,7 @@ public class Database {
 
     private Map<String, PreparedStatement> usedPreparedStatements = new HashMap<String, PreparedStatement>();
 
-    public Database() {
+    protected Database() {
 	try {
 	    InitialContext cxt = new InitialContext();
 	    DataSource ds = (DataSource) cxt.lookup(JNDI_DATASOURCE_NAME);
@@ -58,6 +58,7 @@ public class Database {
 	return statement;
     }
 
+    @Override
     public void close() {
 	for (String sql : usedPreparedStatements.keySet()) {
 	    DBUtils.close(usedPreparedStatements.get(sql));
@@ -72,23 +73,14 @@ public class Database {
 	}
     }
 
-    public boolean isClosed() throws SQLException {
-	return connection.isClosed();
-    }
-
+    @Override
     public void commit() {
 	try {
-	    connection.commit();
+	    if (connection != null) {
+		connection.commit();
+	    }
 	} catch (SQLException e) {
-	    LOGGER.warn("Cannot commit transaction");
-	}
-    }
-
-    public void rollback() {
-	try {
-	    connection.commit();
-	} catch (SQLException e) {
-	    LOGGER.warn("Cannot rollback transaction");
+	    LOGGER.warn("Cannot commit transaction", e);
 	}
     }
 
@@ -100,6 +92,7 @@ public class Database {
 	statement.execute();
     }
 
+    @Override
     public void initDatabase(boolean dropTables) throws SQLException {
 	if (dropTables) {
 	    dropTables();
@@ -152,6 +145,7 @@ public class Database {
 	executeSQL(createCoordinateTable);
     }
 
+    @Override
     public void insertFile(String fileName, Country country) throws SQLException {
 	String sql = "INSERT INTO files(filename, countrycode, countryname) VALUES (?,?,?)";
 	PreparedStatement st = getStatement(sql);
@@ -161,6 +155,7 @@ public class Database {
 	st.executeUpdate();
     }
 
+    @Override
     public GeoFile getFile(String fileName) throws SQLException {
 	String sql = "SELECT id, countrycode, countryname FROM files WHERE filename=?";
 	PreparedStatement st = getStatement(sql);
@@ -183,7 +178,8 @@ public class Database {
 	}
     }
 
-    public GeoHouse insertHouse(int fileId, Coordinates coordinates, String postalCode, String city, String street, String houseNumber, String countryCode)
+    @Override
+    public void insertHouse(int fileId, Coordinates coordinates, String postalCode, String city, String street, String houseNumber, String countryCode)
 	    throws SQLException {
 	String sql = "INSERT INTO houses(files_id, latitude, longitude, postal_code,city,street,house_number,countrycode) VALUES (?,?,?,?,?,?,?,?) RETURNING id";
 	PreparedStatement st = getStatement(sql);
@@ -209,9 +205,6 @@ public class Database {
 	try {
 	    rs = st.executeQuery();
 	    rs.next();
-	    int id = rs.getInt(1);
-	    GeoHouse result = new GeoHouse(id, fileId, coordinates, postalCode, city, street, houseNumber, countryCode);
-	    return result;
 	} finally {
 	    if (rs != null) {
 		rs.close();
@@ -219,6 +212,7 @@ public class Database {
 	}
     }
 
+    @Override
     public List<Location> getCoordinates(Country country) throws SQLException, InterruptedException {
 	String sql = "SELECT id, latitude, longitude FROM houses WHERE files_id = (SELECT id FROM files WHERE countrycode = ?)";
 	PreparedStatement st = getStatement(sql);
@@ -246,6 +240,7 @@ public class Database {
 
     }
 
+    @Override
     public GeoHouse getGeoHouse(int id) throws SQLException {
 	String sql = "SELECT id, files_id, latitude, longitude, postal_code, city, street, house_number, countrycode FROM houses WHERE id=?";
 	PreparedStatement st = getStatement(sql);

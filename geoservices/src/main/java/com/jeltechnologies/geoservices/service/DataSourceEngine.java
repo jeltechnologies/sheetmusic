@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jeltechnologies.geoservices.config.Configuration;
+import com.jeltechnologies.geoservices.database.HouseDataSourceFactory;
 import com.jeltechnologies.geoservices.datamodel.AddressRequest;
 import com.jeltechnologies.geoservices.datamodel.Answer;
 import com.jeltechnologies.geoservices.datamodel.Coordinates;
@@ -40,7 +41,7 @@ public class DataSourceEngine implements DataSourceEngineMBean {
     private static final Logger LOGGER = LoggerFactory.getLogger(DataSourceEngine.class);
 
     private final Configuration configuration;
-
+    
     private final ExecutorService executor;
 
     private final GeoLocationCache locationCache;
@@ -58,6 +59,45 @@ public class DataSourceEngine implements DataSourceEngineMBean {
     private AtomicBoolean readyForService = new AtomicBoolean(false);
     
     private long handledRequests;
+    
+    public DataSourceEngine(ServletContext context, Configuration configuration) throws IOException {
+	JMXUtils.getInstance().registerMBean("engine", "Address", this);
+	this.configuration = configuration;
+	this.executor = Executors.newFixedThreadPool(configuration.threadPool());
+	context.setAttribute(DataSourceEngine.class.getName(), this);
+	if (configuration.cache().useCache()) {
+	    this.locationCache = new GeoLocationCache(configuration.cache(), scheduledExecutorService);
+	} else {
+	    this.locationCache = null;
+	}
+	HouseDataSourceFactory houseDataSourceFactory = HouseDataSourceFactory.getInstance(context);
+	executor.execute(new Runnable() {
+	    @Override
+	    public void run() {
+		try {
+		    List<LocationFilter> datasources = init(houseDataSourceFactory);
+		    LOGGER.info("Loading completed of: ");
+		    int totalHouses = 0;
+		    for (LocationFilter ds : datasources) {
+			if (ds instanceof HouseLocationFilter) {
+			    totalHouses += ds.size();
+			} else {
+			    LOGGER.info("  " + ds.toString());
+			}
+		    }
+		    LOGGER.info("  " + StringUtils.formatNumber(totalHouses) + " adresses");
+		    LOGGER.info("Ready for service");
+		    readyForService.set(true);
+		} catch (IOException e) {
+		    LOGGER.info("Error reading data files", e.getMessage(), e);
+		} catch (SQLException e) {
+		    LOGGER.info("Error interacting with database", e.getMessage(), e);
+		} catch (InterruptedException ie) {
+		    LOGGER.info("Reading of datafiles was interrupted");
+		}
+	    }
+	});
+    }
 
     public AddressRequest getAddress(Coordinates coordinates) {
 	AddressRequest location = null;
@@ -99,44 +139,6 @@ public class DataSourceEngine implements DataSourceEngineMBean {
 	return request;
     }
 
-    public DataSourceEngine(Configuration configuration, ServletContext context) throws IOException {
-	JMXUtils.getInstance().registerMBean("engine", "Address", this);
-	this.configuration = configuration;
-	this.executor = Executors.newFixedThreadPool(configuration.threadPool());
-	context.setAttribute(DataSourceEngine.class.getName(), this);
-	if (configuration.cache().useCache()) {
-	    this.locationCache = new GeoLocationCache(configuration.cache(), scheduledExecutorService);
-	} else {
-	    this.locationCache = null;
-	}
-	executor.execute(new Runnable() {
-	    @Override
-	    public void run() {
-		try {
-		    List<LocationFilter> datasources = init();
-		    LOGGER.info("Loading completed of: ");
-		    int totalHouses = 0;
-		    for (LocationFilter ds : datasources) {
-			if (ds instanceof HouseLocationFilter) {
-			    totalHouses += ds.size();
-			} else {
-			    LOGGER.info("  " + ds.toString());
-			}
-		    }
-		    LOGGER.info("  " + StringUtils.formatNumber(totalHouses) + " adresses");
-		    LOGGER.info("Ready for service");
-		    readyForService.set(true);
-		} catch (IOException e) {
-		    LOGGER.info("Error reading data files", e.getMessage(), e);
-		} catch (SQLException e) {
-		    LOGGER.info("Error interacting with database", e.getMessage(), e);
-		} catch (InterruptedException ie) {
-		    LOGGER.info("Reading of datafiles was interrupted");
-		}
-	    }
-	});
-    }
-
     public boolean isReadyForService() {
 	return readyForService.get();
     }
@@ -162,7 +164,7 @@ public class DataSourceEngine implements DataSourceEngineMBean {
 	return DataSourceEngine.class.getResourceAsStream("/" + name);
     }
 
-    private List<LocationFilter> init() throws SQLException, IOException, InterruptedException {
+    private List<LocationFilter> init(HouseDataSourceFactory houseDataSourceFactory) throws SQLException, IOException, InterruptedException {
 	countries = new CountryMap(getStreamFromResource("countrycodes.json"));
 	List<LocationFilter> datasources = new ArrayList<LocationFilter>();
 	
@@ -173,14 +175,14 @@ public class DataSourceEngine implements DataSourceEngineMBean {
 	// Download at https://public.opendatasoft.com/explore/dataset/geonames-postal-code/export/
 	postalCodes = new PostalCodesLocationFilter(getStreamFromFile("geonames-postal-code.csv"), countries);
 	datasources.add(postalCodes);
-	addOpenStreetSources();
+	addOpenStreetSources(houseDataSourceFactory);
 	for (Country c : houses.keySet()) {
 	    datasources.add(houses.get(c));
 	}
 	return datasources;
     }
 
-    private void addOpenStreetSources() throws SQLException, IOException, InterruptedException {
+    private void addOpenStreetSources(HouseDataSourceFactory houseDataSourceFactory) throws SQLException, IOException, InterruptedException {
 	File dataFolder = new File(configuration.dataFolder());
 	File[] streetFiles = dataFolder.listFiles(new FilenameFilter() {
 	    @Override
@@ -192,7 +194,7 @@ public class DataSourceEngine implements DataSourceEngineMBean {
 	for (File file : streetFiles) {
 	    String countryCode = file.getName().substring(0, 2);
 	    Country country = countries.getCountry(countryCode);
-	    Future<HouseLocationFilter> future = executor.submit(new HouseDataSourceFetcher(country, countries, file));
+	    Future<HouseLocationFilter> future = executor.submit(new HouseDataSourceFetcher(country, countries, file, houseDataSourceFactory));
 	    futureFetchers.add(future);
 	}
 	for (Future<HouseLocationFilter> fetcher : futureFetchers) {

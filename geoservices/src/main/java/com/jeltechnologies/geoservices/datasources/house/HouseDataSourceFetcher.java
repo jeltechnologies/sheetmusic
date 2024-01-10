@@ -11,7 +11,10 @@ import java.util.concurrent.Callable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.jeltechnologies.geoservices.config.Configuration;
 import com.jeltechnologies.geoservices.database.Database;
+import com.jeltechnologies.geoservices.database.HouseDataSource;
+import com.jeltechnologies.geoservices.database.HouseDataSourceFactory;
 import com.jeltechnologies.geoservices.datamodel.Coordinates;
 import com.jeltechnologies.geoservices.datamodel.Country;
 import com.jeltechnologies.geoservices.service.CountryMap;
@@ -22,12 +25,14 @@ public class HouseDataSourceFetcher implements Callable<HouseLocationFilter> {
     private final Country country;
     private final CountryMap countries;
     private final File file;
-    private Database db = null;
+    private HouseDataSource db = null;
+    private final HouseDataSourceFactory datasourceFactory;
 
-    public HouseDataSourceFetcher(Country country, CountryMap countries, File inputFile) {
+    public HouseDataSourceFetcher(Country country, CountryMap countries, File inputFile, HouseDataSourceFactory datasourceFactory) {
 	this.country = country;
 	this.countries = countries;
 	this.file = inputFile;
+	this.datasourceFactory = datasourceFactory;
     }
 
     @Override
@@ -37,11 +42,11 @@ public class HouseDataSourceFetcher implements Callable<HouseLocationFilter> {
 	}
 	try {
 	    LOGGER.info("Loading addresses in " + country.name() + "...");
-	    db = new Database();
+	    db = datasourceFactory.get();
 	    GeoFile geoFile = persistCsvWhenNeeded();
 	    Country country = geoFile.country();
 	    HouseLocationFilter datasource;
-	    datasource = new HouseLocationFilter(country, countries);
+	    datasource = new HouseLocationFilter(country, countries, datasourceFactory);
 	    LOGGER.info("  Finished loading " + StringUtils.formatNumber(datasource.size()) + " addresses in " + country.name());
 	    return datasource;
 	} finally {

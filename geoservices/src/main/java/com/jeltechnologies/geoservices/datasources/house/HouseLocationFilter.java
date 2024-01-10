@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jeltechnologies.geoservices.database.Database;
+import com.jeltechnologies.geoservices.database.HouseDataSource;
+import com.jeltechnologies.geoservices.database.HouseDataSourceFactory;
 import com.jeltechnologies.geoservices.datamodel.AddressRequest;
 import com.jeltechnologies.geoservices.datamodel.Coordinates;
 import com.jeltechnologies.geoservices.datamodel.Country;
@@ -18,7 +20,9 @@ import com.jeltechnologies.geoservices.utils.StringUtils;
 public class HouseLocationFilter extends AbstractLocationFilter {
     private static final Logger LOGGER = LoggerFactory.getLogger(HouseLocationFilter.class);
 
-    private Country country;
+    private final Country country;
+    
+    private final HouseDataSourceFactory houseDataSourceFactory;
 
     /**
      * Read all house coordinates from the database
@@ -27,16 +31,17 @@ public class HouseLocationFilter extends AbstractLocationFilter {
      * @throws SQLException
      * @throws IOException
      */
-    public HouseLocationFilter(Country country, CountryMap countryMap) throws SQLException, IOException, InterruptedException {
+    public HouseLocationFilter(Country country, CountryMap countryMap, HouseDataSourceFactory houseDataSourceFactory) throws SQLException, IOException, InterruptedException {
 	super(countryMap);
+	this.houseDataSourceFactory = houseDataSourceFactory;
 	this.country = country;
 	init();
     }
 
     private void init() throws SQLException, InterruptedException {
-	Database database = null;
+	HouseDataSource database = null;
 	try {
-	    database = new Database();
+	    database = houseDataSourceFactory.get();
 	    super.locations = database.getCoordinates(country);
 	} finally {
 	    if (database != null) {
@@ -46,10 +51,10 @@ public class HouseLocationFilter extends AbstractLocationFilter {
     }
 
     private GeoHouse getHouse(int id) {
-	Database database = null;
+	HouseDataSource database = null;
 	GeoHouse house = null;
 	try {
-	    database = new Database();
+	    database = houseDataSourceFactory.get();
 	    house = database.getGeoHouse(id);
 	} catch (SQLException e) {
 	    LOGGER.warn("Cannot get house because of " + e.getMessage());

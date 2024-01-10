@@ -5,7 +5,8 @@ import org.slf4j.LoggerFactory;
 
 import com.jeltechnologies.geoservices.config.Configuration;
 import com.jeltechnologies.geoservices.config.Environment;
-import com.jeltechnologies.geoservices.database.Database;
+import com.jeltechnologies.geoservices.database.HouseDataSource;
+import com.jeltechnologies.geoservices.database.HouseDataSourceFactory;
 import com.jeltechnologies.geoservices.utils.JMXUtils;
 
 import jakarta.servlet.ServletContextEvent;
@@ -16,17 +17,24 @@ public class ContextListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
+	HouseDataSource datasource = null;
 	try {
 	    Configuration config = Environment.getConfiguration();
-	    Database database = new Database();
-	    database.initDatabase(config.refreshOpenStreetDataCSV());
-	    database.close();
-	    new DataSourceEngine(config, servletContextEvent.getServletContext());
+	    HouseDataSourceFactory factory = HouseDataSourceFactory.getInstance(servletContextEvent.getServletContext());
+	    factory.init(config);
+	    datasource = factory.get();
+	    datasource.initDatabase(config.refreshOpenStreetDataCSV());
+	    new DataSourceEngine(servletContextEvent.getServletContext(), config);
 	    LOGGER.info("Service deployed");
 	} catch (Exception e) {
 	    String message = "Cannot start web application because " + e.getMessage();
 	    LOGGER.error(message, e);
 	    throw new IllegalStateException(message, e);
+	}
+	finally {
+	    if (datasource != null) {
+		datasource.close();
+	    }
 	}
     }
 
