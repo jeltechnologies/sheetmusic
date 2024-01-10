@@ -26,8 +26,9 @@ The accuracy of the service varies per country. The accuracy is excellent in Nor
 
 # Installation and configuration
 To run the geoservice you will need:
-- A Java web container, preferably Apache Tomcat
+- A Java web container, preferably Apache Tomcat because this has been tested in Tomcat.
 - Clone the repository and use Maven to build the projects `geoservices-datamodel` and `geoservices`.
+- Copy the complied WAR file to tomcat/webapps.
 
 ## Configuration
 - Create a YAML file with the following contents, change the dataFolder to the location where you store the data files.
@@ -42,6 +43,7 @@ To run the geoservice you will need:
     scheduleCacheCleanMinutes: 5
   ```
 - Create an environment variable called `GEOSERVICES_CONFIG` which points to the YAML configuration file.
+- After changing the YAML file, you must redeploy the service (WAR file) or restart Tomcat.
 
 # Data files
 The service uses data from both Opendatasoft and Openstreetdata. The data from Opendatasoft is mandatory, while Openstreetdata is optional. More data means more accurate results.
@@ -50,9 +52,10 @@ The service uses data from both Opendatasoft and Openstreetdata. The data from O
 Download the following files from Opendatasoft and place them in your dataFolder. The files from Opendatasoft are mandatory. Without these files the geoservice does not work.
 - 142 thousand cities from https://public.opendatasoft.com/explore/dataset/geonames-all-cities-with-a-population-1000/table/?disjunctive.cou_name_en&sort=name (download the CSV file)
 - 1.5 million postal codes from https://public.opendatasoft.com/explore/dataset/geonames-postal-code/export/ (download the CSV file)
+The files from Opendatasoft will find the city and country of each coordinate globally. 
 
 ## Openstreetdata
-Optionally download houses information Openstreetdata to receive more detailed address information. 
+Optionally download houses information from Openstreetdata to receive street, house numbers in the address. 
 - Download the houses files from https://openstreetdata.org/#addresses. The streets and addresses files are not needed.
 - Unzip the `*-houses.tsv.gz` to `*.houses.tsv` and copy them to the dataFolder.
 More houses files means better accuracy, but larger memory consumption. The geoservice has been tested with all houses files from Openstreetdata, which are 109 million house addresses. 
@@ -63,7 +66,7 @@ By default all streets are loaded in memory. To reduce the memory consumption it
 Should you use the database or not? It depends on the countries used. Here are some examples:
 - United States (31 million addresses): Without PostgreSQL: 13 GB memory. With PostgreSQL: 2 GB memory
 - The Netherlands (10 million address). Without PostgreSQL:  4 GB memory. With PostgreSQL: 1 GB memory
-- All countries will take around 8 GB when PostgreSQL is used.
+- All countries (109 million addresses) will take around 8 GB when PostgreSQL is used.
 
 Follow these steps to install and configure PostgrSQL:
 - Set `useDatabase: true` in the YAML configuration.
@@ -97,7 +100,7 @@ A built-in cache is used to improve performance for lookups of series of picture
 When the service starts, all .tsv files are loaded. If the database is used then they will be inserted into the PostgreSQL database. This can take around 30 minutes to complete. The next time the service is started within a few minutes when the database is used. To force a reload of the .tsv files, you may set `refreshOpenStreetDataCSV` to `true` in the YAML file, or simply drop all database tables and restart the web service.
 
 ## Memory usage
-To reduce memory usage, simply remove houses files you do not needed, or use PostgreSQL.
+To reduce memory usage, simply remove houses files you do not needed, or use PostgreSQL. Don't forget to redeploy the WAR file, or restart Tomcat after adding or removing files.
 
 
 
