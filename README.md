@@ -57,27 +57,49 @@ Optionally download houses information Openstreetdata to receive more detailed a
 - Unzip the `*-houses.tsv.gz` to `*.houses.tsv` and copy them to the dataFolder.
 More houses files means better accuracy, but larger memory consumption. The geoservice has been tested with all houses files from Openstreetdata, which are 109 million house addresses. 
 
-### Database 
+### Database (optional)
 By default all streets are loaded in memory. To reduce the memory consumption it is possible to use PostgreSQL to store the house address information.
+Should you use the database or not? 
 
-Should you use the database or not? It depends on the country.
-- United States (31 million addresses): Without PostgreSQL: 13 GB memory. With PostgresSQL: 2 GB memory
-- The Netherlands (10 million address). Without PostgreSQL:  4 GB memory. With PostgresQL : 1 GB memory
+It depends on the countries used. Here some examples:
+- United States (31 million addresses): Without PostgreSQL: 13 GB memory. With PostgreSQL: 2 GB memory
+- The Netherlands (10 million address). Without PostgreSQL:  4 GB memory. With PostgreSQL: 1 GB memory
 - All countries will take around 8 GB when PostgreSQL is used.
 
+Follow these steps to install and configure PostgrSQL:
+- Set `useDatabase: true` in the YAML configuration.
+- Install PostgreSQL
+- Create an empty database with the name "geoservices". There is no need to create database tables, these will be created when the geoservice is started
+- Download the PostgrSQL JDBC driver from https://jdbc.postgresql.org/ Copy this driver (JAR file) to tomcat/lib
+- Add a JNDI resource with name `jdbc/geoservices` to the file `tomcat/conf/context.xml`. See the below example:
+ ```
+  <Resource 
+		name="jdbc/geoservices" 
+		auth="Container"
+		type="javax.sql.DataSource" 
+		username="******"
+		password="******" 
+		url="jdbc:postgresql://<server:port>/geoservices"
+		driverClassName="org.postgresql.Driver"
+		initialSize="10" 
+		maxTotal="25"
+		maxIdle="5"
+		defaultAutoCommit="false"
+	/>
+  ```
 - 
 
 # For the nerds
 
 ## Performance
-The performance depends on the CPU used. The system is designed to supports multiple requests in parallel. Threading is handled by the web container and/or cloud infrastructure. 
+The performance depends on the CPU used. The system is designed to supports multiple requests in parallel. Threading is handled by the web container and/or cloud infrastructure.  
 A built-in cache is used to improve performance for lookups of series of pictures taken at the same location. This cache is configured in the YAML file.
 
 ## Startup performance
-The first time the service starts, all .tsv files and insert them into the PostgreSQL database. This can take around 30 minutes to complete. After this the next startup will take just a few minutes because all data is read from the database. To force a reload of the .tsv files, you may set `refreshOpenStreetDataCSV` to `true` in the YAML file, or simply drop all database tables and restart the web service.
+When the service starts, all .tsv files are loaded. If the database is used then they will be inserted into the PostgreSQL database. This can take around 30 minutes to complete. The next time the service is started within a few minutes when the database is used. To force a reload of the .tsv files, you may set `refreshOpenStreetDataCSV` to `true` in the YAML file, or simply drop all database tables and restart the web service.
 
 ## Memory usage
-Coordinates are kept in memory, 109 million house addresses will take around 8 GB of heap memory. To reduce memory usage, simply remove houses files you do not need. 
+To reduce memory usage, simply remove houses files you do not needed, or use PostgreSQL.
 
 
 
