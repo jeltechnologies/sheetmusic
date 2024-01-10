@@ -58,19 +58,18 @@ Optionally download houses information Openstreetdata to receive more detailed a
 More houses files means better accuracy, but larger memory consumption. The geoservice has been tested with all houses files from Openstreetdata, which are 109 million house addresses. 
 
 ### Database (optional)
-By default all streets are loaded in memory. To reduce the memory consumption it is possible to use PostgreSQL to store the house address information.
-Should you use the database or not? 
+By default all streets are loaded in memory. To reduce the memory consumption it is possible to use PostgreSQL database to store the house address information.
 
-It depends on the countries used. Here some examples:
+Should you use the database or not? It depends on the countries used. Here are some examples:
 - United States (31 million addresses): Without PostgreSQL: 13 GB memory. With PostgreSQL: 2 GB memory
 - The Netherlands (10 million address). Without PostgreSQL:  4 GB memory. With PostgreSQL: 1 GB memory
 - All countries will take around 8 GB when PostgreSQL is used.
 
 Follow these steps to install and configure PostgrSQL:
 - Set `useDatabase: true` in the YAML configuration.
-- Install PostgreSQL
-- Create an empty database with the name "geoservices". There is no need to create database tables, these will be created when the geoservice is started
-- Download the PostgrSQL JDBC driver from https://jdbc.postgresql.org/ Copy this driver (JAR file) to tomcat/lib
+- Install PostgreSQL.
+- Create an empty database with the name "geoservices". There is no need to create database tables, the tables will be created automatically when the geoservice is started.
+- Download the PostgrSQL JDBC driver from https://jdbc.postgresql.org/. Copy this driver (JAR file) to `tomcat/lib`.
 - Add a JNDI resource with name `jdbc/geoservices` to the file `tomcat/conf/context.xml`. See the below example:
  ```
   <Resource 
@@ -87,7 +86,6 @@ Follow these steps to install and configure PostgrSQL:
 		defaultAutoCommit="false"
 	/>
   ```
-- 
 
 # For the nerds
 
