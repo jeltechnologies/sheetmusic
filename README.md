@@ -2,7 +2,8 @@
 This project is a web service that provides the address from coordinates.
 
 ## Why would I need this?
-With this service you can use geolocation information without limits and (cloud) costs, especially when running it as self-hosted, on your own server.
+With this service you can use geolocation information for free, without limits.
+You can run this service self-hosted, on your own server, or in the cloud.
 
 Address information is also possible to fetch from paid web services, or from web services that throttle the requests to 1 request per second. 
 But these cloud service easily cost 30 € per month, while cloud storage is also not cheap.
@@ -22,7 +23,7 @@ The service also comes with a simple web page, for testing puproses. Here you fi
 ![geoservice-ui](https://github.com/jeltechnologies/geoservices/assets/153366704/d64a41e8-b9ae-4841-bfa3-060d8a43c5c6)
 
 ## Accuracy
-The accuracy of the service varies per country. The accuracy is excellent in North America, China and  most European countries. There are exceptions, for example for Sweden, the accuracy is less good, because there is less quality open data available.
+The accuracy of the service varies per country. The accuracy is excellent in North America, China and  most European countries. There are exceptions. For example the accuracy is less good in Sweden, because there is less quality open data available.
 
 # Installation and configuration
 To run the geoservice you will need:
@@ -76,11 +77,11 @@ The geoservice has been tested with all houses files from Openstreetdata, which 
 # For the nerds
 
 ## Performance
-The performance depends on the CPU used. The system is designed to supports multiple requests in parallel. Threading is handled by the web container and/or cloud infrastructure. A built-in cache is used to improve performance for lookups of series of pictures taken at the same location. This cache is configured in the YAML file.
+The performance depends on the CPU used. The system is designed to supports multiple requests in parallel. Threading is handled by the web container and/or cloud infrastructure. 
+A built-in cache is used to improve performance for lookups of series of pictures taken at the same location. This cache is configured in the YAML file.
 
 ## Startup performance
-The first time the application runs, it will read all .tsv files and insert them into the PostgreSQL database. This can take around 30 minutes to complete. 
-After this the next startup will take just a few minutes. To force a reload of the .tsv files, you may set `refreshOpenStreetDataCSV` to `true` in the YAML file, or simply drop all database tables and restart the web service.
+The first time the service starts, all .tsv files and insert them into the PostgreSQL database. This can take around 30 minutes to complete. After this the next startup will take just a few minutes because all data is read from the database. To force a reload of the .tsv files, you may set `refreshOpenStreetDataCSV` to `true` in the YAML file, or simply drop all database tables and restart the web service.
 
 ## Memory usage
 Coordinates are kept in memory, 109 million house addresses will take around 8 GB of heap memory. To reduce memory usage, simply remove houses files you do not need. 
