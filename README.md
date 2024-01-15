@@ -3,9 +3,10 @@ This project is a web service that provides the address from coordinates.
 
 ## Why would I need this?
 With this service you can use geolocation information for free, without limits.
-You can run this service self-hosted, on your own server, or in the cloud.
 
-Cloud services that provide the same service require signing up for API keys, throttle requests to 1 per second or cost easily 30 € per month. The cheaper cloud services most likely use the same data sources as this service.
+Cloud services that provide simular services require signing up for API keys, they may throttle requests to per day, or cost easily 30 € per month.
+
+You can run this service self-hosted, on your own server, or in the cloud. 
 
 ## How does it work?
 The address service is provided as REST interface with a JSON payload.
@@ -22,13 +23,13 @@ The service also comes with a simple web page, for testing puproses. Here you fi
 ![geoservice-ui](https://github.com/jeltechnologies/geoservices/assets/153366704/d64a41e8-b9ae-4841-bfa3-060d8a43c5c6)
 
 ## Accuracy
-The accuracy of the service varies per country. The accuracy is excellent in North America, China and  most European countries. There are exceptions. For example the accuracy is less good in Sweden, because there is less quality open data available.
+The accuracy of the service varies per country. The accuracy is excellent in North America, and  most European countries and good in China. But there are exceptions. For example the accuracy is less good in Sweden, because there is less quality open data available.
 
 # Installation and configuration
 To run the geoservice you will need:
 - A Java web container, preferably Apache Tomcat because this has been tested in Tomcat.
-- Clone the repository and use Maven to build the projects `geoservices-datamodel` and `geoservices`.
-- Copy the complied WAR file to tomcat/webapps.
+- Clone the repository and use Maven to build both projects `geoservices-datamodel` and `geoservices`.
+- Copy the compliled WAR file to tomcat/webapps.
 
 ## Configuration
 - Create a YAML file with the following contents, change `dataFolder` to the location where you store the data files.
