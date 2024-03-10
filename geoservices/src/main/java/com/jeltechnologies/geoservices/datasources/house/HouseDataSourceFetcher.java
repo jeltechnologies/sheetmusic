@@ -11,8 +11,6 @@ import java.util.concurrent.Callable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jeltechnologies.geoservices.config.Configuration;
-import com.jeltechnologies.geoservices.database.Database;
 import com.jeltechnologies.geoservices.database.HouseDataSource;
 import com.jeltechnologies.geoservices.database.HouseDataSourceFactory;
 import com.jeltechnologies.geoservices.datamodel.Coordinates;

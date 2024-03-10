@@ -6,4 +6,6 @@ public interface DataSourceEngineMBean {
     int getNrOfHouses();
     int getNrOfPostalCodes();
     long getHandledRequests();
+    String getLastRequest();
+    String getLastAddress();
 }

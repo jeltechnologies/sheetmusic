@@ -6,6 +6,8 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -60,6 +62,10 @@ public class DataSourceEngine implements DataSourceEngineMBean {
     
     private long handledRequests;
     
+    private LocalDateTime lastRequest;
+    
+    private String lastAddress;
+    
     public DataSourceEngine(ServletContext context, Configuration configuration) throws IOException {
 	JMXUtils.getInstance().registerMBean("engine", "Address", this);
 	this.configuration = configuration;
@@ -100,6 +106,7 @@ public class DataSourceEngine implements DataSourceEngineMBean {
     }
 
     public AddressRequest getAddress(Coordinates coordinates) {
+	lastRequest = LocalDateTime.now();
 	AddressRequest location = null;
 	if (this.locationCache != null) {
 	    try {
@@ -116,6 +123,7 @@ public class DataSourceEngine implements DataSourceEngineMBean {
 	    this.locationCache.add(location);
 	}
 	handledRequests++;
+	lastAddress = location.answer().getAddress().toString();
 	return location;
     }
 
@@ -230,5 +238,15 @@ public class DataSourceEngine implements DataSourceEngineMBean {
     @Override
     public long getHandledRequests() {
 	return handledRequests;
+    }
+
+    @Override
+    public String getLastRequest() {
+	return lastRequest.format(DateTimeFormatter.ISO_DATE_TIME);
+    }
+
+    @Override
+    public String getLastAddress() {
+	return lastAddress;
     }
 }
