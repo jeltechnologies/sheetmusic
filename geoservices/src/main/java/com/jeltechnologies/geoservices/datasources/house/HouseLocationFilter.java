@@ -84,6 +84,7 @@ public class HouseLocationFilter extends AbstractLocationFilter {
 	    request.setCountry(countries.getCountry(houseAddress.countryCode()), coordinates);
 	    String city = houseAddress.city();
 	    if (countryCode.equals("SE")) {
+		city = StringUtils.stripAfter(city, "s kommun");
 		city = StringUtils.stripAfterLast(city, " kommun");
 	    }
 	    if (!countryCode.equals("CN") && !countryCode.equals("TW")) {
