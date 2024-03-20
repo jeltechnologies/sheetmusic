@@ -20,7 +20,7 @@ public class HouseLocationFilter extends AbstractLocationFilter {
     private static final Logger LOGGER = LoggerFactory.getLogger(HouseLocationFilter.class);
 
     private final Country country;
-    
+
     private final HouseDataSourceFactory houseDataSourceFactory;
 
     /**
@@ -30,7 +30,8 @@ public class HouseLocationFilter extends AbstractLocationFilter {
      * @throws SQLException
      * @throws IOException
      */
-    public HouseLocationFilter(Country country, CountryMap countryMap, HouseDataSourceFactory houseDataSourceFactory) throws SQLException, IOException, InterruptedException {
+    public HouseLocationFilter(Country country, CountryMap countryMap, HouseDataSourceFactory houseDataSourceFactory)
+	    throws SQLException, IOException, InterruptedException {
 	super(countryMap);
 	this.houseDataSourceFactory = houseDataSourceFactory;
 	this.country = country;
@@ -81,8 +82,12 @@ public class HouseLocationFilter extends AbstractLocationFilter {
 	    request.setPostcalCode(houseAddress.postalCode(), coordinates);
 	    String countryCode = houseAddress.countryCode();
 	    request.setCountry(countries.getCountry(houseAddress.countryCode()), coordinates);
+	    String city = houseAddress.city();
+	    if (countryCode.equals("SE")) {
+		city = StringUtils.stripAfterLast(city, " kommun");
+	    }
 	    if (!countryCode.equals("CN") && !countryCode.equals("TW")) {
-		request.setPlace(houseAddress.city(), coordinates);
+		request.setPlace(city, coordinates);
 	    }
 	}
     }

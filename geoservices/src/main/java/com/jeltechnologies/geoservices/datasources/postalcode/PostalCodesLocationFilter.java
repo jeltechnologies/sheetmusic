@@ -20,7 +20,7 @@ import com.jeltechnologies.geoservices.utils.StringUtils;
 /**
  * Find postal code and correct cityname of a location using OpenDataSoft
  * <p>
- * This is done after finding the house, because data about houses often ionly contains municipality name and not city name.
+ * This is done after finding the house, because data about houses often only contains municipality name and not city name.
  * <p>
  * 
  * @see <a href="https://public.opendatasoft.com/explore/dataset/geonames-postal-code/table/">All Postal Code - All countries (Geonames)</a>
