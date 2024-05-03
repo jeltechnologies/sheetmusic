@@ -1,6 +1,6 @@
 # Screenmusic - play music from screen
 Do you like playing piano, keyboard and have lots of sheet music in PDF <a href="http://www.jososoft.dk/yamaha/sheets.htm">like these</a>.
-Would you like to play from screen? Then this project is for you. 
+Would you like to play from screen? Then this project is for you. T
 
 ## Screenshots
 ### Songbooks
@@ -29,8 +29,6 @@ Open the pages on fullscreen, side by side in lanscape, or page-by-page in portr
 ![page](https://github.com/jeltechnologies/sheetmusic/assets/153366704/fb7d28a7-4311-4dc1-953f-f93a26495441)
 
 ## Features
-Features
-
 - Change pages with the foot pedal. Developed and tested with <a href="https://www.pageflip.com/">Pageflip Dragonfly</a>. A highly recommended footpedal!
 - Easy - Just add your files. All thumbnails are automatically generated. Accepts PDF, PNG and JPG.
 - Download books or pages
@@ -41,6 +39,10 @@ Features
 - Made for large PDF collections. Serving my expanding collection of 8,000 books consisting of 220,000 pages.
 - Runs in the browser - No apps, nothing to install, no spyware, no ads.
 - No cloud - just runs on from a Raspberry Pi, saving much money as cloud storage is expensive.
+
+## Frequently Asked Questions
+### Where are the PDFs?
+
 
 
 
