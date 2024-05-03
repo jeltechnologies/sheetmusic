@@ -42,6 +42,7 @@ Open the pages on fullscreen, side by side in lanscape, or page-by-page in portr
 
 ## Frequently Asked Questions
 ### Where are the PDFs?
+This project does not come with PDFs. Just <a href="https://www.google.com/search?q=sheetmusic+free">Google</a> and you shall find. More than you think :-)
 
 
 
