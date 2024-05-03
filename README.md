@@ -30,16 +30,17 @@ Open the pages on fullscreen, side by side in lanscape, or page-by-page in portr
 
 ## Features
 Features
-- Easy. Just add your files. All thumbnails are automatically generated. Accecpted formats: PDF, PG, PNG.
-- Change pages with the foot pedal. Developed and tested with <a href="https://www.pageflip.com/">Pageflip Dragonfly</a>. Highly recommended
+
+- Change pages with the foot pedal. Developed and tested with <a href="https://www.pageflip.com/">Pageflip Dragonfly</a>. A highly recommended footpedal!
+- Easy - Just add your files. All thumbnails are automatically generated. Accepts PDF, PNG and JPG.
 - Download books or pages
-- Search for books, pages, artits, songs and so on
+- Search for books, pages, artits and songs.
 - Bookmark your favorite artist, books and songs
-- History to continue from were you left
-- Listen to the music in Midi. Export directly to <a href="https://musescore.org">Musescore</a> by using <a href="https://github.com/Audiveris">Audiveris Optical Music Recognition software</a>
+- Continue were you left, with history function
+- Listen to the music in Midi. Export directly to <a href="https://musescore.org">Musescore</a> by using <a href="https://github.com/Audiveris">Audiveris</a> Optical Music Recognition software. 
 - Made for large PDF collections. Serving my expanding collection of 8,000 books consisting of 220,000 pages.
-- Runs in the browser - No apps, nothing to install, no spyware. no ads.
-- No cloud - just runs on from a Raspberry Pi, saving much money as cloud storage is expensive. 
+- Runs in the browser - No apps, nothing to install, no spyware, no ads.
+- No cloud - just runs on from a Raspberry Pi, saving much money as cloud storage is expensive.
 
 
 
