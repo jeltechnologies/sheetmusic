@@ -1,0 +1,628 @@
+/* https://designschool.canva.com/blog/website-color-schemes/ */
+:root {
+	--foreground: #414141;
+	--accent: #FF6A5C;
+	--pale: #CCDFCB;
+	--grey: #f2f2f2;
+	--background: white;
+}
+
+body {
+	background-color: var(--background);
+	font: normal normal 13px/1.4 Segoe,"Segoe UI",Calibri,Helmet,FreeSans,Sans-Serif;
+	color: var(--foreground);
+	font-size: 0.8em;
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
+.view a:link, .view a:visited, .view a:active, .view a:hover {
+	color: var(--foreground);
+	text-decoration: none;
+}
+
+.view-selected a:link, .view-selected a:visited, .view-selected a:active, .view-selected a:hover {
+	color: var(--accent);
+	text-decoration: none;
+}
+
+a:link, a:visited, a:active, a:hover {
+	color: var(--foreground);
+}
+
+ a:hover {
+ 	text-decoration: underline;
+ }
+ 
+ .pageTitle a {
+	color: var(--accent);
+}
+
+.clickButton {
+	cursor: pointer;
+	font-size: large;
+	margin-right: 8px;
+}
+
+.clickButton :hover {
+	color: var(--accent);
+}
+
+.float {
+	margin: 0 auto;
+}
+
+.float:after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+
+.float-item {
+	float: left;
+	word-wrap: break-word;
+}
+
+.container {
+	position: relative;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.item {
+	position: relative;
+	border: 1px solid var(--foreground);
+	/*padding: 5px;*/
+	width: 200px;
+	height: 300px;
+	margin: 10px;
+	color: white;
+	text-align: center;
+	object-fit: contain;
+}
+
+.item-image {
+	max-width: 200px;
+	max-height: 300px;
+	object-fit: contain;
+}
+
+.item:hover {
+	box-shadow: 0 0 2px 1px var(--accent);
+}
+
+.title {
+	position: absolute;
+	bottom: 0px;
+	/*padding: 5px;*/
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 50px;
+	width: 100%;
+	background-color: var(--pale);
+	font-size: small;
+}
+
+
+.autocomplete-suggestions {
+	border: 1px solid var(--foreground);
+	background: white;
+	overflow: auto;
+}
+
+.autocomplete-suggestion {
+	padding: 2px 5px;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.autocomplete-selected {
+	background:var(--grey);
+}
+
+.autocomplete-suggestions strong {
+	font-weight: normal;
+	color: var(--accent);
+}
+
+.autocomplete-group {
+	padding: 2px 5px;
+}
+ 
+.autocomplete-group strong {
+	display: block;
+	border-bottom: 1px solid;
+	border-color: var(--foreground);
+}
+
+#main-menu {
+	margin: 16px;
+	display: flex;
+	justify-content: left;
+	background-color: var(--background);
+}
+
+#main-menu div {
+	margin-right: 24px;
+	line-height: 32px;
+	height: 32px;
+	display: flex;
+  	align-items: center;
+  	justify-content: center;
+}
+
+#main-menu-search-input, #search-for-artist, #searchpage-search-input{
+	border-radius: 8px;
+	color: var(--foreground);
+	font-size: small;
+}
+
+#main-menu-search-input, #search-for-artist {
+	width: 150px;
+}
+
+.pageTitle, .page-title-small {
+	color: var(--accent);
+	font-size: large;
+	clear:left;
+
+	padding: 8px;
+}
+
+.page-title-small {
+	font-size: medium;
+	margin: 10px;
+}
+
+.headerWithTitle {
+	margin-top: 10px;
+	margin-left: 10px;
+}
+
+.table-contents-header { 
+	font-size: x-small;
+	color: var(--foreground);
+	font-weight: bold;
+	margin: 10px;
+}
+
+.table-contents-link, .table-contents-letter {
+	font-size: small;
+	margin-bottom: 8px;
+	margin-top: 8px;
+}
+
+.table-contents-link {
+	color: var(--foreground);
+	background-color: var(--pale);
+}
+
+.table-contents-letter {
+	color: var(--accent);
+	background-color: white;
+	font-weight: bold;
+}
+
+.index-navigation {
+	float: right;
+}
+
+#pre-loaded-pages {
+	display: none;
+}
+
+button {
+	background-color: var(--pale);
+	border: none;
+	color: var(--foreground);
+	padding: 8px 8px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: medium;
+	margin: 4px 2px;
+	cursor: pointer;
+	
+}
+
+button:disabled,
+button[disabled]{
+  
+  background-color: var(--grey);
+  color: var(--foreground);
+}
+
+#tree {
+	border: 1px solid;
+	border-color: var(--foreground);
+	border-radius: 5px;
+}
+
+.view-selected, .view {
+	font-size: large;
+}
+
+.view-selected {
+	text-decoration:overline;
+	color: var(--accent);
+}
+
+.top-menu a {
+   padding-right: 24px;
+}
+
+.top-menu a:hover, #top-bar-center a:active {
+  color: var(--foreground);
+}
+
+.index-title {
+	margin-top: 16px;
+}
+
+ul.card-list {
+	list-style-type: none;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	padding: 0;
+	display: inherit;
+}
+
+li.card-list {
+	position: relative;
+	height: 200px;
+	width: 150px;
+	border: 1px solid;
+	border-color: var(--foreground);
+	text-align: center;
+	justify-content: center;
+	margin: 8px;
+	float: left;
+	background-color: var(--background);
+}
+
+.img-card-list {
+  display: inline; 
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+} 
+
+.card-title {
+	position: absolute;
+	bottom: 0px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 4em;
+	width: 150px;
+	background-color: var(--pale);
+	color: var(--foreground);
+	font-size: small;
+	
+}
+
+.card-title:hover {
+	text-decoration: underline;
+}
+
+.category-items, .favorite-items {
+	display: inline-block;
+  	margin: 0px;
+  	background-color: var(--grey);
+  	padding: 8px;
+  	margin: 8px;
+}
+
+.category-title, .favorite-title {
+	display: block;
+	font-size: medium;
+	padding-left: 8px;
+	color: var(--accent);
+}
+
+.category-button {
+	margin-left: 8px;
+}
+
+#catagories-selector {
+	margin: 8px;
+}
+
+.sheetmusic-select {
+	padding-left: 8px;
+	padding-bottom: 8px;
+}
+
+.filter-sort-select {
+	border: 1px solid var(--pale);
+	font-size: small;
+	color: var(--foreground);
+	background-color: var(--background);
+	border-radius: 5px;
+}
+
+/*
+DROPDOWN from https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_js_dropdown_hover
+*/
+.dropbtn {
+	background-color: var(--background);
+	color: var(--foreground);
+	border: none;
+	cursor: pointer;
+	z-index: 10;
+	width: auto;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+	background-color: var(--accent);
+}
+
+.dropdown {
+	font-size: 100%;
+	position: relative;
+	display: inline-block;
+}
+
+.dropdown-content {
+	display: none;
+	position: absolute;
+	background-color: var(--pale);
+	min-width: 200px;
+	overflow: auto;
+	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+	z-index: 10;
+}
+
+.dropdown-content a {
+	color: var(--foreground);
+	padding: 12px 16px;
+	text-decoration: none;
+	display: block;
+}
+
+.dropdown a:hover {
+	background-color: var(--pale);
+}
+
+.dropdown-content a:hover {
+	background-color: var(--pale);
+}
+
+.dropdown:hover .dropdown-content {
+	display: block;
+}
+
+.dropdown:hover .dropbtn {
+	background-color: var(--pale);
+}
+
+/* ===================================
+book.jsp
+======================================*/
+
+#refreshModal {
+	position: absolute;
+	float: left;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	width: auto;
+}
+
+.refreshmodalbuttons {
+	margin: auto;
+}
+
+#refheshModal button {
+	width: 100px;
+}
+
+/* ===================================
+page.jsp
+======================================*/
+
+.swiper {
+	width: 100%;
+	height: 98vh;
+}
+
+#swiper-right-top-menu, #swiper-left-top-menu {
+	position: absolute;
+	z-index: 10;
+	top: 10px;
+}
+
+#swiper-right-top-menu {
+	right: 10px;
+}
+
+#swiper-left-top-menu {
+	left: 10px;
+}
+
+#swiper-titles-top {
+	z-index: 10;
+	top: 10px;
+}
+
+#favoriteModal, #downloadModal, #exportWaitModal, #exportWaitModal {
+	position: absolute;
+	float: left;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	padding: 16px;
+	max-width: 65%;
+}
+
+#downloadModal {
+	height: 95%;
+	width: 80%;
+}
+
+#favoriteModal td {
+	font-size: small;
+}
+
+h3 {
+	font-size: x-large;
+	color: var(--foreground);
+	background-color: var(--background);
+}
+
+.modal-table {
+	padding: 32px;
+}
+
+.modal-table td, .modal-table th {
+  text-align: left;
+  vertical-align: middle;
+  
+}
+
+.modal-table-table th {
+	font-size: large;
+	font-weight: bold;
+}
+
+.download-image {
+	border: 1px solid var(--foreground);
+	margin: 0;
+	padding: 0;
+	max-height: 300px;
+}
+
+.button-icon {
+	height: 24px;
+	width: 24px;
+}
+
+#page-title-container {
+	position: absolute;
+	top: 10px;
+	float: left;
+	width: 100%;
+  	display: flex;
+  	flex-wrap: nowrap;
+  	z-index: 11;
+}
+
+#page-title-container > div {
+  	width: 100%;
+  	margin: 10px;
+  	text-align: center;
+  	font-size: small;
+}
+
+.page-title {
+	background-color: var(--pale);
+	color: var(--foreground);
+	padding: 8px;
+	font-size: large;
+}
+
+.audiveris-font-image {
+	max-height:50px;
+	max-width: 50px;
+}
+
+.audiveris-font-selection {
+	border: 2px;
+	border-color: var(--grey);
+	border-style: solid;
+  	border-radius: 12px;
+  	width: 250px;
+  	height: 120px;
+}
+
+.audiveris-font-table {
+	width: 100%;
+  	border: 1px;
+	border-color: var(--foreground);
+	border-style: solid;
+	margin-top: 32px;
+}
+
+.selected-pages-table {
+	height: 400px;
+	width: 100%;
+}
+
+.selected-pages-cell {
+  	text-align: center;
+  	vertical-align: top;
+  	width: 33%;
+}
+
+.selected-option {
+	border: 5px solid;
+	border-color: var(--accent);
+}
+
+.wizard-buttons-row {
+	position: absolute;
+	bottom: 32px;
+	text-align: center;
+	margin-left: auto;
+  	margin-right: auto;
+  	width: 100%;
+}
+
+.wizard-buttons-row button {
+	width:  100px;
+}
+
+#export-musicxml-selected-image {
+	height: 400px;
+	width: 300px;
+	border: 1px solid var(--foreground);
+}
+
+.downlood-select-label {
+	width: 100px;
+	display: block;
+}
+
+.download-select {
+	 width: 250px;
+}
+
+.foldericon {
+	color: var(--foreground);
+    line-height: 210px;
+}
+
+/* Search */
+#sheetmusic-search-results, #sheetmusic-main-body, #sheetmusic-menu-items {
+	display: none;
+}
+
+#main-menu-search-input, #search-for-artist, #searchpage-search-input{
+	border-radius: 8px;
+	color: var(--foreground);
+	font-size: small;
+}
+
+#main-menu-search-input, #search-for-artist {
+	width: 100px;
+}
+
+/* Statistics */
+.library-statistics {
+	padding-left: 8px;
+	padding-bottom: 8px;
+}
+
+.library-statistics-name {
+	min-width: 100px;
+	text-align: left;
+}
+
+.library-statistics-value {
+	text-align: right;
+}

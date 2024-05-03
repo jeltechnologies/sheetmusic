@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib 
+	xmlns="https://jakarta.ee/xml/ns/jakartaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-jsptaglibrary_3_1.xsd"
+    version="3.1">
+
+	<tlib-version>1.0</tlib-version>
+	<short-name>sheetmusic</short-name>
+
+	<tag>
+		<name>library</name>
+		<tag-class>com.jeltechnologies.sheetmusic.tags.LibraryTag</tag-class>
+		<body-content>empty</body-content>
+	</tag>
+
+	<tag>
+		<name>favorites</name>
+		<tag-class>com.jeltechnologies.sheetmusic.favorites.FavoritesTag</tag-class>
+		<body-content>empty</body-content>
+	</tag>
+	
+	<tag>
+		<name>library-statistics</name>
+		<tag-class>com.jeltechnologies.sheetmusic.statistics.LibraryTag</tag-class>
+		<body-content>empty</body-content>
+	</tag>
+
+	<tag>
+		<name>mostpopularbooks</name>
+		<tag-class>com.jeltechnologies.sheetmusic.statistics.MostPopularBooksTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>top</name>
+			<required>false</required>
+		</attribute>
+	</tag>
+
+	<tag>
+		<name>mostpopularpages</name>
+		<tag-class>com.jeltechnologies.sheetmusic.statistics.MostPopularPagesTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>top</name>
+			<required>false</required>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<name>search</name>
+		<tag-class>com.jeltechnologies.sheetmusic.search.SearchTag</tag-class>
+		<body-content>empty</body-content>
+	</tag>
+
+	<tag>
+		<name>title</name>
+		<tag-class>com.jeltechnologies.sheetmusic.tags.TitleTag</tag-class>
+		<body-content>empty</body-content>
+	</tag>
+
+	<tag>
+		<name>bookpages</name>
+		<tag-class>com.jeltechnologies.sheetmusic.tags.BookPagesTag</tag-class>
+		<body-content>empty</body-content>
+	</tag>
+
+	<tag>
+		<name>folder-tree</name>
+		<tag-class>com.jeltechnologies.sheetmusic.tags.FolderTreeTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>id</name>
+			<required>true</required>
+		</attribute>
+		<attribute>
+			<name>defaultfolder</name>
+			<required>false</required>
+		</attribute>
+	</tag>
+
+	<tag>
+		<name>main-menu</name>
+		<tag-class>com.jeltechnologies.sheetmusic.tags.MainMenuTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>selected</name>
+			<required>false</required>
+		</attribute>
+		<attribute>
+			<name>showSearch</name>
+			<required>false</required>
+		</attribute>
+	</tag>
+
+	<tag>
+		<name>history</name>
+		<tag-class>com.jeltechnologies.sheetmusic.history.HistoryTag</tag-class>
+		<body-content>empty</body-content>
+	</tag>
+
+	<tag>
+		<name>categories-select</name>
+		<tag-class>com.jeltechnologies.sheetmusic.tags.CategoriesSelectTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>containerid</name>
+			<required>false</required>
+		</attribute>
+		<attribute>
+			<name>id</name>
+			<required>true</required>
+		</attribute>
+		<attribute>
+			<name>class</name>
+			<required>false</required>
+		</attribute>
+		<attribute>
+			<name>label</name>
+			<required>false</required>
+		</attribute>
+		<attribute>
+			<name>onchange</name>
+			<required>false</required>
+		</attribute>
+		<attribute>
+			<name>onclick</name>
+			<required>false</required>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<name>series-select</name>
+		<tag-class>com.jeltechnologies.sheetmusic.tags.SeriesSelectTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>containerid</name>
+			<required>false</required>
+		</attribute>
+		<attribute>
+			<name>id</name>
+			<required>true</required>
+		</attribute>
+		<attribute>
+			<name>class</name>
+			<required>false</required>
+		</attribute>
+		<attribute>
+			<name>label</name>
+			<required>false</required>
+		</attribute>
+		<attribute>
+			<name>onchange</name>
+			<required>false</required>
+		</attribute>
+		<attribute>
+			<name>onclick</name>
+			<required>false</required>
+		</attribute>
+	</tag>
+
+</taglib>
