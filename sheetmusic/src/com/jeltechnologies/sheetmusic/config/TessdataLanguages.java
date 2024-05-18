@@ -25,8 +25,13 @@ public class TessdataLanguages implements Serializable {
     public TessdataLanguages(String tessdataPrefixFolderName) {
 	if (tessdataPrefixFolderName != null) {
 	    try {
-		init(new File(tessdataPrefixFolderName));
-		LOGGER.info(this.toString());
+		File folder = new File(tessdataPrefixFolderName);
+		if (folder.isDirectory()) {
+		    init(folder);
+		    LOGGER.info(this.toString());
+		} else {
+		    LOGGER.warn("Cannot find tessdatafolder " + tessdataPrefixFolderName);
+		}
 	    } catch (Exception e) {
 		LOGGER.warn("Cannot load TESS language files", e);
 	    }

@@ -14,4 +14,12 @@ public record AudiverisConfiguration(
 	this.default_options = new AudiverisDefaultOptions().getOptions();
 	this.languages = new TessdataLanguages(tessdata_prefix).getLanguages();
     }
+
+    @Override
+    public String toString() {
+	return "AudiverisConfiguration [audiveris_lib=" + audiveris_lib + ", tessdata_prefix=" + tessdata_prefix + ", default_options=" + default_options.size()
+		+ ", languages=" + languages.size() + "]";
+    }
+    
+    
 }

@@ -85,7 +85,7 @@ public class AudiverisDefaultOptions implements Serializable {
 
     @Override
     public String toString() {
-	return "AudiverisDefaultOptions [options=" + options + "]";
+	return "AudiverisDefaultOptions [options=" + options.size() + "]";
     }
     
     public List<AudiverisOption> getOptions() {
