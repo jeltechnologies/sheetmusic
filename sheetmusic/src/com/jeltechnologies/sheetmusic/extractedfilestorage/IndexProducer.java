@@ -73,7 +73,7 @@ public class IndexProducer implements Runnable {
 	List<File> allFiles;
 
 	if (filesToIndex == null) {
-	    allFiles = new BookFilesFinder(user.sheetMusicFolder()).getAllBookFiles();
+	    allFiles = new BookFilesFinder(user.getSheetMusicFolder()).getAllBookFiles();
 	} else {
 	    allFiles = filesToIndex;
 	}

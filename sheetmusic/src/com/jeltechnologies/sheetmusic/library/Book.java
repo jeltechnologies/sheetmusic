@@ -192,7 +192,7 @@ public class Book implements Serializable, Comparable<Book> {
 
     @Override
     public String toString() {
-	return "Book [fileChecksum=" + fileChecksum + ", nrOfPages=" + nrOfPages + ", title=" + title + ", artist=" + artist + "]";
+	return "Book [relativeFileName=" + relativeFileName + ", nrOfPages=" + nrOfPages + ", title=" + title + ", fileChecksum=" + fileChecksum + "]";
     }
 
     @Override

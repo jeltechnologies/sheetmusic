@@ -43,7 +43,7 @@ public class HouseKeepingThread implements Runnable, HouseKeepingThreadMBean {
 
 	boolean interrupted = false;
 
-	List<File> pdfFiles = new BookFilesFinder(user.sheetMusicFolder()).getAllBookFiles();
+	List<File> pdfFiles = new BookFilesFinder(user.getSheetMusicFolder()).getAllBookFiles();
 	if (Thread.interrupted()) {
 	    interrupted = true;
 	}

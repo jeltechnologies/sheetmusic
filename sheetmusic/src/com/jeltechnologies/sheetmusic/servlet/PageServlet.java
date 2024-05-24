@@ -53,7 +53,7 @@ public class PageServlet extends BaseServlet {
 			checksum = book.getFileChecksum();
 		    }
 		} else {
-		    book = new Library(getUser(request), new SheetMusicContext(request)).getBook(checksum);
+		    book = new Library(getUser(request), new SheetMusicContext(request)).getBookWithFileName(checksum);
 		}
 		if (book == null) {
 		    response.setStatus(404);
@@ -91,7 +91,7 @@ public class PageServlet extends BaseServlet {
 
     private void tryToExtractMissingThumb(ServletContext context, Book book, Thumbnail thumbnail) {
 	if (LOGGER.isDebugEnabled()) {
-	    LOGGER.debug("tryToExtractMissingThumb for " + thumbnail);
+	    LOGGER.debug("tryToExtractMissingThumb for " + thumbnail + " and book " + book);
 	}
 	List<Thumbnail> thumbs = new ArrayList<>(1);
 	thumbs.add(thumbnail);
@@ -105,7 +105,7 @@ public class PageServlet extends BaseServlet {
 	    do {
 		Thread.sleep(1000);
 		attempt++;
-	    } while (!file.isFile() && attempt > maxAttempts);
+	    } while (!file.isFile() && attempt < maxAttempts);
 	} catch (InterruptedException ie) {
 	    LOGGER.info("GetPage interrupted");
 	}

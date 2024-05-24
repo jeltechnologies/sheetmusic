@@ -1,7 +1,6 @@
 package com.jeltechnologies.sheetmusic.db;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,7 +25,10 @@ public class DBUsers extends DBCrud {
 	    rs = st.executeQuery();
 	    User user = null;
 	    if (rs.next()) {
-		Path path = Paths.get(rs.getString(2));
+		File path = new File(rs.getString(2));
+		if (!path.isDirectory()) {
+		    LOGGER.warn("User sheetfolder is no directory: " + path.getAbsolutePath());
+		}
 		user = new User(rs.getString(1), path);
 	    }
 	    if (user == null) {
@@ -48,7 +50,7 @@ public class DBUsers extends DBCrud {
 	    List<User> users = new ArrayList<User>();
 	    while (rs.next()) {
 		String name = rs.getString(1);
-		Path path = Paths.get(rs.getString(2));
+		File path = new File(rs.getString(2));
 		User user = new User(name, path);
 		users.add(user);
 	    }

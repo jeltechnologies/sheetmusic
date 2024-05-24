@@ -19,7 +19,7 @@ public class JSTreeFactory {
     
     public JSTreeData getFolders(File selectedFolder) {
 	JSTreeData root = new JSTreeData();
-	File folder = user.sheetMusicFolder().toFile();
+	File folder = user.getSheetMusicFolder();
 	walkFolder(root, folder, selectedFolder);
 	return root;
     }

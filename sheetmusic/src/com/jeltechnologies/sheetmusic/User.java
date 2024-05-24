@@ -1,26 +1,29 @@
 package com.jeltechnologies.sheetmusic;
 
 import java.io.File;
-import java.nio.file.Path;
 
 import com.jeltechnologies.utils.StringUtils;
 
-public record User(String name, Path sheetMusicFolder) {
+public record User(String name, File sheetMusicFolderName) {
     
     public File getFile(String relativeFileName) {
-	Path path = Path.of(sheetMusicFolder.toString(), relativeFileName);
-	return path.toFile();
+	String filePath =  getSheetMusicFolder() + "/" + relativeFileName;
+	return new File(filePath);
     }
 
     public String getRelativeFileName(File file) {
 	String absoluteFileName = file.getAbsolutePath();
-	String baseFolderFileName = sheetMusicFolder.toFile().getAbsolutePath();
+	String baseFolderFileName =  getSheetMusicFolder().getAbsolutePath();
 	String relativeFileName = StringUtils.stripBefore(absoluteFileName, baseFolderFileName);
 	relativeFileName = StringUtils.replaceAll(relativeFileName, '\\', '/');
 	if (relativeFileName.startsWith("/")) {
 	    relativeFileName = relativeFileName.substring(1);
 	}
 	return relativeFileName;
+    }
+    
+    public File getSheetMusicFolder() {
+	return sheetMusicFolderName;
     }
     
 }

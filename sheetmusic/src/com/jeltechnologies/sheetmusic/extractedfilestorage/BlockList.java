@@ -20,7 +20,7 @@ public class BlockList {
 
     public BlockList(User user) {
 	this.user = user;
-	this.blockListFile = user.sheetMusicFolder().toFile().getAbsolutePath() + "/not-working-files.txt";
+	this.blockListFile = user.getSheetMusicFolder().getAbsolutePath() + "/not-working-files.txt";
 	readBlockList();
     }
 

@@ -46,7 +46,7 @@ public class FolderTreeTag extends BaseTag {
 
 	addLine("<div id=\"" + id + "\">");
 	
-	File root = getUser().sheetMusicFolder().toFile();
+	File root = getUser().getSheetMusicFolder();
 	addFolder(root);
 	addLine("</div>");
 

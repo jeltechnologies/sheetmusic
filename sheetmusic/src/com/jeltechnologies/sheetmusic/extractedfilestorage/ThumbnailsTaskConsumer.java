@@ -66,7 +66,7 @@ public class ThumbnailsTaskConsumer implements Runnable, ThumbnailsTaskConsumerM
 		    File bookFile = user.getFile(bookRelativeFileName);
 		    new BlockList(user).add(bookFile);
 		}
-		LOGGER.error(errorMessage);
+		LOGGER.error(errorMessage, t);
 	    }
 	}
 	busy = false;

@@ -3,7 +3,6 @@ package com.jeltechnologies.sheetmusic;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FilenameFilter;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,13 +25,13 @@ public class BookFilesFinder {
     /**
      * Default finding all pdf, png and jpg
      */
-    public BookFilesFinder(Path path) {
+    public BookFilesFinder(File sheetFolder) {
 	this.extension = null;
-	this.sheetFolder = path.toFile();
+	this.sheetFolder = sheetFolder;
     }
 
-    public BookFilesFinder(Path path, String extension) {
-	this.sheetFolder = path.toFile();
+    public BookFilesFinder(File sheetFolder, String extension) {
+	this.sheetFolder = sheetFolder;
 	this.extension = extension.toLowerCase();
     }
 

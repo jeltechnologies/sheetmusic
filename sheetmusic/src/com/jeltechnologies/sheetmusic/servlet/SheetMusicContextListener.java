@@ -151,7 +151,7 @@ public class SheetMusicContextListener implements ServletContextListener {
 	    for (int i = 0; i < threads; i++) {
 		int threadNumber = i + 1;
 		ThumbnailsTaskConsumer consumer = new ThumbnailsTaskConsumer(user, threadNumber, queue);
-		jmx.registerMBean(ThumbnailsTaskConsumer.class.getSimpleName() + " " + threadNumber, MBEAN_INDEX_SERVICE_TYPE, consumer);
+		jmx.registerMBean(ThumbnailsTaskConsumer.class.getSimpleName() + "-" + threadNumber, MBEAN_INDEX_SERVICE_TYPE, consumer);
 		executor.execute(consumer);
 	    }
 	}
@@ -162,7 +162,7 @@ public class SheetMusicContextListener implements ServletContextListener {
 	    for (int i = 0; i < ocrThreads; i++) {
 		int threadNumber = i + 1;
 		Consumer consumer = new Consumer(user, sheetMusicContext, config.opticalmusicrecognition().audiveris(), omrQueue, threadNumber);
-		jmx.registerMBean(Consumer.class.getSimpleName() + " " + threadNumber, MBEAN_OMR_SERVICE_TYPE, consumer);
+		jmx.registerMBean(Consumer.class.getSimpleName() + "-" + threadNumber, MBEAN_OMR_SERVICE_TYPE, consumer);
 		executor.execute(consumer);
 	    }
 	}
