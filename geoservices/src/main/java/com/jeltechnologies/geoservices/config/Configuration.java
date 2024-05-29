@@ -19,7 +19,7 @@ public record Configuration(
 	final int EXPIRY_TIME_MINUTES = 1;
 	final int SCHEDULE_CACHE_CLEAN_MINUTES = 2;
 	final boolean REFRESH_OPENSTREETDATA_CSV = false;
-	final int THREADPOOL = 15;
+	final int THREADPOOL = 5;
 
 	if (useDatabase == null) {
 	    useDatabase = USE_DATABASE;
