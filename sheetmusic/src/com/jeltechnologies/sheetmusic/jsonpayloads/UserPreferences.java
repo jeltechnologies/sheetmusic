@@ -8,10 +8,19 @@ public class UserPreferences implements Serializable {
     private String categorySelected = "";
     private String seriesSelected = "";
     private SortType songBooksSorting = null;
+    private int slideTransitionSpeed = 250; // 	Duration of transition between slides (in ms) https://swiperjs.com/swiper-api#param-speed
     private final MusicXMLPreferences ocr;
     
     public UserPreferences() {
 	ocr = new MusicXMLPreferences();
+    }
+
+    public int getSlideTransitionSpeed() {
+        return slideTransitionSpeed;
+    }
+
+    public void setSlideTransitionSpeed(int slideTransitionSpeed) {
+        this.slideTransitionSpeed = slideTransitionSpeed;
     }
 
     public String getSeriesSelected() {

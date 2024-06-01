@@ -8,7 +8,7 @@ public record Configuration(int indexConsumeThreads, Admin admin, StorageConfigu
 	this.admin = admin;
 	this.opticalmusicrecognition = opticalmusicrecognition;
 	if (indexConsumeThreads < 1) {
-	    this.indexConsumeThreads = 15;
+	    this.indexConsumeThreads = 6;
 	} else {
 	    this.indexConsumeThreads = indexConsumeThreads;
 	}

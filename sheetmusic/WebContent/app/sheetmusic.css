@@ -431,6 +431,10 @@ page.jsp
 	height: 98vh;
 }
 
+.image-on-slide {
+	height: 100%;
+}
+
 #swiper-right-top-menu, #swiper-left-top-menu {
 	position: absolute;
 	z-index: 10;

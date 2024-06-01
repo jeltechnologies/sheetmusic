@@ -226,7 +226,7 @@ function closeModal() {
 function createCardHtml(checksum, page, title, link) {
 	let image = "page?size=small&checksum=" + checksum + "&page=" + page;
 	let html = "<a href='" + link + "'>";
-	html = html + "<li class='card-list'><img class='img-card-list' src='" + image + "'>";
+	html = html + "<li class='card-list'><img class='img-card-list' loading='lazy' src='" + image + "'>";
 	html = html + "<div class='card-title'>" + title;
 	html = html + "</div></li></a>";
 	return html;

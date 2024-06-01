@@ -8,7 +8,6 @@ const HIDE_NAVIGATION_MS = HIDE_NAVIGATION_SECONDS * 1000;
 var id = getRequestParameter("id");
 var currentPage = getRequestParameter("page");
 var book;
-var imageUrls;
 var swiper;
 var slidesPerView;
 var preferences;
@@ -67,12 +66,21 @@ function isPortrait() {
 }
 
 function initSwiper() {
+	let slideTransitionSpeed = 250;
+	if (preferences != null) {
+		let preferedTransition = preferences.slideTransitionSpeed;
+		if (preferedTransition != undefined && preferedTransition > -1) {
+			slideTransitionSpeed = preferedTransition;
+		}
+	}
+	
 	swiper = new Swiper('#swiper', {
 		slidesPerView: slidesPerView,
 		initialSlide: (getRequestParameter("page") - 1),
 		spaceBetween: 0,
 		centeredSlides: false,
-		cssMode: true,
+		cssMode: false,
+		speed: slideTransitionSpeed,
 
 		navigation: {
 			nextEl: '.swiper-button-next',
@@ -101,29 +109,66 @@ function initSwiper() {
 function updateSwiper() {
 	initSwiper();
 	addSlides();
+	loadImagesOnSlide();
 	swiper.on('slideChange', swiperSlideChange);
 }
 
+function loadImagesOnSlide() {
+	let pagesBefore = 1;
+	let pagesAfter = 3;
+	let currentPage = swiper.realIndex + 1;
+	let firstPage = currentPage - pagesBefore;
+	if (firstPage < 1) {
+		firstPage = 1;
+	}
+	let lastPage = currentPage + pagesAfter;
+	if (lastPage > book.nrOfPages) {
+		lastPage = book.nrOfPages;
+	}
+	for (let page = firstPage; page <= lastPage; page++) {
+		let div = "#" + getDivIdForPage(page);
+		let src = "page?size=medium&checksum=" + book.fileChecksum + "&page=" + page;
+		$(div).attr("src", src);
+	}
+}
+
 function swiperSlideChange() {
+	loadImagesOnSlide();
 	updateFavoriteStatus();
 }
 
 function addSlides() {
+	let initialPage = getRequestParameter("page");
 	let slides = [];
-	for (let i = 0; i < imageUrls.length; i++) {
+	const eagerLoadingSmallSize = false;
+	let imageUrlBase = "page?checksum=" + book.fileChecksum + "&aize=small&page=";
+	for (let i = 0; i < book.nrOfPages; i++) {
 		let html = "<div class='swiper-slide'><div class='swiper-zoom-container'>";
-		html = html + imageUrlToHtml(imageUrls[i]);
-		html = html + "</div></div>";
+		let page = i + 1;
+		let id = getDivIdForPage(page);
+		let src = imageUrlBase + page;
+		html += "<img class='image-on-slide' id='" + id + "' src='" + src + "'";
+		if (eagerLoadingSmallSize) {
+			if (i === initialPage || i === (initialPage + 1)) {
+				html += " loading='eager'";
+			} else {
+				html += " loading='lazy'";
+			}
+		}
+		html += "/>";
+		html += "</div><div class='swiper-lazy-preloader'></div></div>";
 		slides.push(html);
 	}
 	swiper.appendSlide(slides);
 	swiper.update();
 }
 
-function imageUrlToHtml(url) {
-	let html = "<img src='" + url.src + "' ";
-	html = html + "srcset='" + url.srcset + "' ";
-	html = html + "class='slides-per-view-" + slidesPerView + "' loading='lazy'/>";
+function getDivIdForPage(page) {
+	return "image-page-" + page;
+}
+
+function imageUrlToHtml(id, url) {
+	let html = "<img class='image-on-slide' id='" + id + "' src='" + url.src + "'/>";
 	return html;
 }
 
@@ -134,39 +179,25 @@ function getBook() {
 
 function updateBook(data) {
 	book = data;
-	//console.log(book.title);
-
-	let imageUrlBase = "page?checksum=" + book.fileChecksum + "&page=";
-	imageUrls = [];
-	for (let i = 0; i < book.nrOfPages; i++) {
-		let imageUrl = {};
-		let base = imageUrlBase + (i + 1);
-		imageUrl.src = base + "&size=medium";
-		let srcset = base + "&size=medium 1x" + ", " + base + "&size=large 2x";
-		imageUrl.srcset = srcset;
-		imageUrls.push(imageUrl);
-		//console.log(imageUrl);
-	}
-
 	initPageDownloadOptions();
 	updateOrientation();
 }
 
 function updateOrientation() {
+	//alert("updateOrientation");
 	console.log("updateOrientation");
 	slidesPerView = getSlidesPerView();
-	updateSwiper();
+	if (swiper !== undefined && swiper !== null) {
+		swiper.destroy(true, true);
+		swiper = undefined;
+		setTimeout(() => {
+			updateSwiper();
+		}, 1000);
+		
+	} else {
+		updateSwiper();
+	}
 	updatePageLabels();
-	swiper.on('swiperslideChange', function() {
-		if (!ignoreSwiperSlideChange) {
-			//currentPage = (swiper.realIndex + 1);
-			//updatePageLabels();
-			updateFavoriteStatus();
-			toggleNavigation();
-			schedulePostHistory();
-		}
-	});
-
 }
 
 function updatePageLabels() {
@@ -257,12 +288,12 @@ function downloadClicked(type) {
 	showDownloadWizardPage();
 	if ($('#ocr-language option').length == 0) {
 		getJson("ocr-languages", addLanguageOptions);
-	} 
+	}
 }
 
 function addLanguageOptions(data) {
 	let languages = data;
-	for (let i = 0; i< languages.length; i++) {
+	for (let i = 0; i < languages.length; i++) {
 		let language = languages[i];
 		$('#ocr-languages').append(new Option(language.language, language.code));
 	}
@@ -276,11 +307,11 @@ function addLanguageOptions(data) {
 function updateDownloadOptionsFromPreferences() {
 	let ocrSettings = preferences.ocr.preferences;
 	console.log(ocrSettings);
-	
-	let language =  getOmrPreference("org.audiveris.omr.text.Language.defaultSpecification");
+
+	let language = getOmrPreference("org.audiveris.omr.text.Language.defaultSpecification");
 	$("select#ocr-languages").val(language);
-	
-	let textFont =  getOmrPreference("org.audiveris.omr.ui.symbol.TextFont.defaultTextFamily");
+
+	let textFont = getOmrPreference("org.audiveris.omr.ui.symbol.TextFont.defaultTextFamily");
 	if (textFont === "SansSerif") {
 		audiverisTextFontClicked('textfont-sans-serif');
 	} else {
@@ -308,33 +339,33 @@ function updateDownloadOptionsFromPreferences() {
 	if (lyrics) {
 		$('#export-musicxml-option-lyrics').prop("checked");
 	}
-	
+
 	let chordNames = getOmrPreference("org.audiveris.omr.sheet.ProcessingSwitches.chordNames");
 	if (chordNames) {
 		$('#export-musicxml-option-chordnames').prop("checked");
 	}
-	
+
 	let articulations = getOmrPreference("org.audiveris.omr.sheet.ProcessingSwitches.articulations");
 	if (articulations) {
 		$('#export-musicxml-option-articulations').prop("checked");
 	}
-	
+
 	let instrument = getOmrPreference("org.audiveris.omr.score.LogicalPart.defaultSingleStaffPartName");
-	
+
 	$("select#default-instrument").val(instrument);
 }
 
 function getOmrPreference(name) {
 	let result;
 	let omrPrefs = preferences.ocr.preferences;
-	for (let i=0;i<omrPrefs.length;i++) {
+	for (let i = 0; i < omrPrefs.length; i++) {
 		let pref = omrPrefs[i];
 		if (pref.name === name) {
 			result = pref.value;
 		}
 	}
 	return result;
-} 
+}
 
 function selectPagesClicked(type) {
 	$('#download-pages-left').removeClass("selected-option");
@@ -382,7 +413,7 @@ function downloadNextClicked() {
 			}
 			let imageSrc = getImageUrl(from);
 			let backgroundImageUrl = "url('" + imageSrc + ")'";
-			
+
 			$("#export-musicxml-selected-image").css("background-image", backgroundImageUrl);
 			showDownloadWizardPage();
 		} else {
@@ -442,7 +473,7 @@ function downloadCancelClicked() {
 
 function audiverisTextFontClicked(fontName) {
 	console.log("Text font: " + fontName);
-	
+
 	$('#textfont-sans-serif').removeClass("selected-option");
 	$('#textfont-serif').removeClass("selected-option");
 	$('#textfont-finale-jazz-text').removeClass("selected-option");
@@ -496,7 +527,7 @@ function download() {
 }
 
 function startMusicXMLJob(from, to) {
-	
+
 	let jobData = {};
 	jobData.bookId = book.fileChecksum;
 	jobData.from = from;
@@ -505,12 +536,12 @@ function startMusicXMLJob(from, to) {
 
 	let language = $('#ocr-languages').val();
 	options.push(getOption("org.audiveris.omr.text.Language.defaultSpecification", language));
-	
-    // Bravura, FinaleJazz, JazzPerc
-    let musicfont="";   
+
+	// Bravura, FinaleJazz, JazzPerc
+	let musicfont = "";
 	if ($('#musicfont-bravura').hasClass('selected-option') == true) {
 		musicfont = "Bravura";
-	} 
+	}
 	if ($('#musicfont-finale-jazz').hasClass('selected-option')) {
 		musicfont = "FinaleJazz";
 	}
@@ -520,46 +551,46 @@ function startMusicXMLJob(from, to) {
 	if (musicfont !== "") {
 		options.push(getOption("org.audiveris.omr.ui.symbol.MusicFont.defaultMusicFamily", musicfont));
 	}
-	
-	let textfont = "";    
-    // SansSerif, Serif,  FinaleJazzText
-    if ($('#textfont-sans-serif').hasClass('selected-option')) {
+
+	let textfont = "";
+	// SansSerif, Serif,  FinaleJazzText
+	if ($('#textfont-sans-serif').hasClass('selected-option')) {
 		textfont = "SansSerif";
 	}
-    if ($('#textfont-serif').hasClass('selected-option')) {
+	if ($('#textfont-serif').hasClass('selected-option')) {
 		textfont = "Serif";
 	}
-    if ($('#textfont-finale-jazz-text').hasClass('selected-option')) {
+	if ($('#textfont-finale-jazz-text').hasClass('selected-option')) {
 		textfont = "FinaleJazzText";
 	}
 	console.log("textfont: " + textfont);
 	if (textfont !== "") {
 		options.push(getOption("org.audiveris.omr.ui.symbol.TextFont.defaultTextFamily", textfont));
-	} 
+	}
 
 	let chordNames = $('#export-musicxml-option-chordnames').is(":checked");
 	console.log(chordNames);
 	options.push(getOption("org.audiveris.omr.sheet.ProcessingSwitches.chordNames", chordNames));
-	
+
 	let lyrics = $('#export-musicxml-option-lyrics').is(":checked");
 	options.push(getOption("org.audiveris.omr.sheet.ProcessingSwitches.lyrics", lyrics));
-	
+
 	let articulations = $('#export-musicxml-option-articulations').is(":checked");
 	options.push(getOption("org.audiveris.omr.sheet.ProcessingSwitches.articulations", articulations));
-	
+
 	let instrument = $('#default-instrument').val();
 	options.push(getOption("org.audiveris.omr.score.LogicalPart.defaultSingleStaffPartName", instrument));
-	
+
 	options.push(getOption("org.audiveris.omr.sheet.Profiles.defaultQuality", "Poor"));
-	
+
 	//options.push(getOption("org.audiveris.omr.sheet.Scale.defaultBeamSpecification", 10));
 	//
-		//Synthetic,
-        /** The standard quality, small gaps allowed. */
-        //Standard,
-        /** The lowest quality, use a hierarchy of gap profiles. */
-        //Poor;
-	
+	//Synthetic,
+	/** The standard quality, small gaps allowed. */
+	//Standard,
+	/** The lowest quality, use a hierarchy of gap profiles. */
+	//Poor;
+
 	jobData.options = options;
 	postJson("download-musicxml", jobData, receiveJobId);
 }
@@ -572,7 +603,7 @@ function getOption(name, value) {
 }
 
 function receiveJobId(data) {
-	exportMusicXMLJobId  = data.responseText;
+	exportMusicXMLJobId = data.responseText;
 	console.log(exportMusicXMLJobId);
 	getJobStatus();
 	refreshExportMusicXMLStatus = setInterval(getJobStatus, 1000);
@@ -1037,7 +1068,6 @@ function favoritesModalOk() {
 
 function favoritesModalDelete() {
 	hideFavoritesModal();
-	var data = {};
 	let id = book.fileChecksum;
 	let pagenumber = (swiper.realIndex + 1);
 	let url = "rest/favorites/page/" + id + "/" + pagenumber;

@@ -1,9 +1,13 @@
 package com.jeltechnologies.sheetmusic.servlet;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -132,6 +136,8 @@ public class SheetMusicContextListener implements ServletContextListener {
 	executor.execute(new MaintenanceThread());
 	executor.shutdown();
     }
+    
+    record SheetMusicFolder(File folder, User firstUser) {};
 
     /**
      * Make sure this is done in startup single thread to prevent race condition
@@ -147,22 +153,39 @@ public class SheetMusicContextListener implements ServletContextListener {
 	JMXUtils jmx = sheetMusicContext.getJmx();
 	jmx.registerMBean(ThumbnailsQueue.class.getSimpleName(), MBEAN_INDEX_SERVICE_TYPE, queue);
 	int threads = config.indexConsumeThreads();
+	
+	Map<File, List<User>> sheetMusicFoldersInUse = new HashMap<File, List<User>>();
+	
 	for (User user : users) {
+	    File folder = user.getSheetMusicFolder();
+	    List<User> usingThatFolder = sheetMusicFoldersInUse.get(folder);
+	    if (usingThatFolder == null) {
+		usingThatFolder = new ArrayList<User>();
+		sheetMusicFoldersInUse.put(folder, usingThatFolder);
+	    }
+	    usingThatFolder.add(user);
+	}
+	
+	for (File folderInUse : sheetMusicFoldersInUse.keySet()) {
+	    List<User> usingFolder = sheetMusicFoldersInUse.get(folderInUse);
+	    User user = usingFolder.get(0);
 	    for (int i = 0; i < threads; i++) {
 		int threadNumber = i + 1;
 		ThumbnailsTaskConsumer consumer = new ThumbnailsTaskConsumer(user, threadNumber, queue);
-		jmx.registerMBean(ThumbnailsTaskConsumer.class.getSimpleName() + "-" + threadNumber, MBEAN_INDEX_SERVICE_TYPE, consumer);
+		jmx.registerMBean(ThumbnailsTaskConsumer.class.getSimpleName() + "-" + user.name() + "-" + threadNumber, MBEAN_INDEX_SERVICE_TYPE, consumer);
 		executor.execute(consumer);
 	    }
 	}
 	JobQueue omrQueue = JobQueue.getInstance();
 	jmx.registerMBean(JobQueue.class.getSimpleName(), MBEAN_OMR_SERVICE_TYPE, omrQueue);
 	int ocrThreads = 1;
-	for (User user : users) {
+	for (File folderInUse : sheetMusicFoldersInUse.keySet()) {
+	    List<User> usingFolder = sheetMusicFoldersInUse.get(folderInUse);
+	    User user = usingFolder.get(0);
 	    for (int i = 0; i < ocrThreads; i++) {
 		int threadNumber = i + 1;
 		Consumer consumer = new Consumer(user, sheetMusicContext, config.opticalmusicrecognition().audiveris(), omrQueue, threadNumber);
-		jmx.registerMBean(Consumer.class.getSimpleName() + "-" + threadNumber, MBEAN_OMR_SERVICE_TYPE, consumer);
+		jmx.registerMBean(Consumer.class.getSimpleName() + "-" + user.name() + "-" + threadNumber, MBEAN_OMR_SERVICE_TYPE, consumer);
 		executor.execute(consumer);
 	    }
 	}

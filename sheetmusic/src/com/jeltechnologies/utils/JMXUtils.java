@@ -26,16 +26,16 @@ public class JMXUtils {
     }
    
     public void registerMBean(String name, String type, Object bean) {
-//	if (registeredMBeans.get(name) != null) {
-//	    throw new IllegalStateException("Already registered another MBean with name " + name);
-//	}
+	if (registeredMBeans.get(name) != null) {
+	    throw new IllegalStateException("Already registered another MBean with name " + name);
+	}
 	MBeanServer server = ManagementFactory.getPlatformMBeanServer();
 	ObjectName objectName;
 	try {
 	    String objectNameString = MBEAN_NAME_PREFIX + type + ",name=" + name;
 	    objectName = new ObjectName(objectNameString);
 	    server.registerMBean(bean, objectName); 
-	    LOGGER.info("Registered MBean: " + name);
+	    LOGGER.debug("Registered MBean: " + name);
 	    registeredMBeans.put(name, objectName);
 	} catch (MalformedObjectNameException | InstanceAlreadyExistsException | MBeanRegistrationException
 		| NotCompliantMBeanException e) {

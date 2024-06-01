@@ -67,7 +67,7 @@ public class BookPagesTag extends BaseTag {
   	b.append("<a href=\"").append(link).append("\">");
 
   	if (thumbImageUrl != null) {
-  	    b.append("<img class=\"item-image\" src=\"page?checksum=");
+  	    b.append("<img loading=\"lazy\" class=\"item-image\" src=\"page?checksum=");
   	    b.append(thumbImageUrl).append("&page=").append(page).append("&size=small\">");
   	} else {
   	    b.append("<span class=\"foldericon\">").append(ICON_FOLDER).append("</span>");

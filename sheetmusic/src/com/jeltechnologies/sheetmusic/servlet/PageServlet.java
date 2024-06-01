@@ -40,35 +40,36 @@ public class PageServlet extends BaseServlet {
 	if (pageString == null) {
 	    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	} else {
-
-	    Book book = null;
 	    if (checksum == null && file == null) {
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	    } else {
 		if (checksum == null) {
-		    book = new Library(getUser(request), new SheetMusicContext(request)).getBookByFileName(file);
+		    Library library = new Library(getUser(request), new SheetMusicContext(request));
+		    Book book = library.getBookByFileName(file);
 		    if (book == null) {
 			LOGGER.warn("Cannot find book file: " + file + ", checksum: " + checksum);
 		    } else {
 			checksum = book.getFileChecksum();
 		    }
-		} else {
-		    book = new Library(getUser(request), new SheetMusicContext(request)).getBookWithFileName(checksum);
 		}
-		if (book == null) {
+		if (checksum == null) {
 		    response.setStatus(404);
 		} else {
 		    Size size;
-		    if (askedSize.equalsIgnoreCase("small")) {
+		    if (askedSize == null) {
 			size = Size.SMALL;
 		    } else {
-			if (askedSize.equalsIgnoreCase("medium")) {
-			    size = Size.MEDIUM;
+			if (askedSize.equalsIgnoreCase("small")) {
+			    size = Size.SMALL;
 			} else {
-			    if (askedSize.equalsIgnoreCase("large")) {
-				size = Size.LARGE;
-			    } else {
+			    if (askedSize.equalsIgnoreCase("medium")) {
 				size = Size.MEDIUM;
+			    } else {
+				if (askedSize.equalsIgnoreCase("large")) {
+				    size = Size.LARGE;
+				} else {
+				    size = Size.MEDIUM;
+				}
 			    }
 			}
 		    }
@@ -77,7 +78,11 @@ public class PageServlet extends BaseServlet {
 		    Thumbnail thumb = new Thumbnail(checksum, page, size, cacheFolderExtracted);
 		    File cachedFile = thumb.getCachedFile();
 		    if (!cachedFile.exists()) {
-			tryToExtractMissingThumb(request.getServletContext(), book, thumb);
+			Library library = new Library(getUser(request), new SheetMusicContext(request));
+			Book book = library.getBookWithFileName(checksum);
+			if (book != null) {
+			    tryToExtractMissingThumb(request.getServletContext(), book, thumb);
+			}
 		    }
 		    if (!cachedFile.exists()) {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
