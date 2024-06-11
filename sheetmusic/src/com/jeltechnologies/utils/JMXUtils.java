@@ -20,7 +20,7 @@ public class JMXUtils {
 
     private Map<String, ObjectName> registeredMBeans = new HashMap<String, ObjectName>();
 
-    private static final String MBEAN_NAME_PREFIX = "com.jeltechnologies.sheetmusic:type=";
+    private static final String MBEAN_NAME_PREFIX = "com.jeltechnologies.screenmusic:type=";
     
     public JMXUtils() {
     }

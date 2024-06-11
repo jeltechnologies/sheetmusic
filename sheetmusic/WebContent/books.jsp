@@ -2,7 +2,7 @@
 <html>
 <%@ taglib prefix="sheetmusic" uri="WEB-INF/tags.tld"%>
 <%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
-<%@page import="com.jeltechnologies.sheetmusic.tags.BaseTag"%>
+<%@page import="com.jeltechnologies.screenmusic.tags.BaseTag"%>
 <head>
 <jsp:include page="head.jsp"></jsp:include>
 <script src="app/books.js"></script>

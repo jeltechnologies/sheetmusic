@@ -1,19 +1,18 @@
 <!DOCTYPE html>
-<%@ taglib prefix="sheetmusic" uri="WEB-INF/tags.tld"%>
+<%@page import="com.jeltechnologies.screenmusic.servlet.ScreenMusicContext"%>
+<%@ taglib prefix="screenmusic" uri="WEB-INF/tags.tld"%>
 <%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%@page import="com.jeltechnologies.utils.JsonUtils"%>
-<%@page import="com.jeltechnologies.sheetmusic.library.Category"%>
+<%@page import="com.jeltechnologies.screenmusic.library.Category"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
-<%@page import="com.jeltechnologies.sheetmusic.tags.BaseTag"%>
-<%@page import="com.jeltechnologies.sheetmusic.servlet.SheetMusicContext"%>
+<%@page import="com.jeltechnologies.screenmusic.tags.BaseTag"%>
 <%@page import="com.jeltechnologies.utils.StringUtils"%>
-<%@page import="com.jeltechnologies.sheetmusic.library.BookPage"%>
-<%@page import="com.jeltechnologies.sheetmusic.library.Book"%>
-<%@page import="com.jeltechnologies.sheetmusic.library.Library"%>
-<%@page import="com.jeltechnologies.sheetmusic.servlet.SheetMusicContext"%>
-<%@page import="com.jeltechnologies.sheetmusic.User"%>
-<%@page import="com.jeltechnologies.sheetmusic.servlet.BaseServlet"%>
+<%@page import="com.jeltechnologies.screenmusic.library.BookPage"%>
+<%@page import="com.jeltechnologies.screenmusic.library.Book"%>
+<%@page import="com.jeltechnologies.screenmusic.library.Library"%>
+<%@page import="com.jeltechnologies.screenmusic.User"%>
+<%@page import="com.jeltechnologies.screenmusic.servlet.BaseServlet"%>
 <%!
 
 List<String> textFieldIds = new ArrayList<String>();
@@ -81,9 +80,9 @@ public String addInputText(String inputId, String name, String value, boolean hi
 %>
 <%
 	String bookId = (String) request.getParameter("id");
-	SheetMusicContext sheetMusicContext = new SheetMusicContext(application);
+	ScreenMusicContext screenmusicContext = new ScreenMusicContext(application);
 	User user = BaseServlet.getUser(request);
-	Library library = new Library(user, sheetMusicContext);
+	Library library = new Library(user, screenmusicContext);
 	Book book = library.getBookWithCategories(bookId);
 	List<String> fileNames = library.getBookFiles(book);
 	String fileName = fileNames.get(0);

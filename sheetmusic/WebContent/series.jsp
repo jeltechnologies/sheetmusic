@@ -2,7 +2,7 @@
 <%@page import="com.jeltechnologies.utils.StringUtils"%>
 <%@ taglib prefix="sheetmusic" uri="WEB-INF/tags.tld"%>
 <%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
-<%@page import="com.jeltechnologies.sheetmusic.tags.BaseTag"%>
+<%@page import="com.jeltechnologies.screenmusic.tags.BaseTag"%>
 <%
 String artist = request.getParameter("artist");
 String artistEncoded = StringUtils.encodeURL(artist);

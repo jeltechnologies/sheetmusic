@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<%@page import="com.jeltechnologies.sheetmusic.User"%>
-<%@page import="com.jeltechnologies.sheetmusic.servlet.SheetMusicContext"%>
-<%@page import="com.jeltechnologies.sheetmusic.servlet.BaseServlet"%>
+<%@page import="com.jeltechnologies.screenmusic.User"%>
+<%@page import="com.jeltechnologies.screenmusic.servlet.ScreenMusicContext"%>
+<%@page import="com.jeltechnologies.screenmusic.servlet.BaseServlet"%>
 <html>
 <%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" errorPage="error.jsp"%>
 <%@page import="com.jeltechnologies.utils.StringUtils"%>
-<%@page import="com.jeltechnologies.sheetmusic.library.BookPage"%>
-<%@page import="com.jeltechnologies.sheetmusic.library.Book"%>
-<%@page import="com.jeltechnologies.sheetmusic.library.Library"%>
+<%@page import="com.jeltechnologies.screenmusic.library.BookPage"%>
+<%@page import="com.jeltechnologies.screenmusic.library.Book"%>
+<%@page import="com.jeltechnologies.screenmusic.library.Library"%>
 <%@ taglib prefix="sheetmusic" uri="WEB-INF/tags.tld"%>
 <%@ taglib prefix="icons" uri="jeltechnologies-icons"%>
 
 <%
-SheetMusicContext sheetMusicContext = new SheetMusicContext(application);
+ScreenMusicContext sheetMusicContext = new ScreenMusicContext(application);
 User user = BaseServlet.getUser(request);
 String id = (String) request.getParameter("id");
 Book book = new Library(user, sheetMusicContext).getBook(id);

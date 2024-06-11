@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" errorPage="error.jsp"%>
 <%@ taglib prefix="sheetmusic" uri="WEB-INF/tags.tld"%>
-<%@page import="com.jeltechnologies.sheetmusic.tags.BaseTag"%>
+<%@page import="com.jeltechnologies.screenmusic.tags.BaseTag"%>
 <%@page import="com.jeltechnologies.utils.StringUtils"%>
 <%@ taglib prefix="icons" uri="jeltechnologies-icons"%>
 <html>

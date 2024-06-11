@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="sheetmusic" default="deploy" basedir=".">
-	<property name="webapp-name" value="sheetmusic" />
+<project name="screenmusic" default="deploy" basedir=".">
+	<property name="webapp-name" value="screenmusic" />
 	<property name="version" value="0.0.1-SNAPSHOT" />
 	<property name="build" value="./target" />
 	
