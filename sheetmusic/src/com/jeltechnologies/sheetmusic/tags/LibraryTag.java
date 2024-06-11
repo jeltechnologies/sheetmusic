@@ -1,6 +1,7 @@
 package com.jeltechnologies.sheetmusic.tags;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -32,6 +33,7 @@ public class LibraryTag extends BaseTag {
 	LOGGER.trace("User: " + user);
 	Library library = new Library(user, new SheetMusicContext(getRequest()));
 	foldersInFolder = library.getFoldersInFolder(relativeFolderName);
+	Collections.sort(foldersInFolder);
 	LOGGER.trace("foldersInFolder " + foldersInFolder);
 	booksInFolder = library.getBooksFromFolder(relativeFolderName);
 	LOGGER.trace("booksInFolder " + booksInFolder);

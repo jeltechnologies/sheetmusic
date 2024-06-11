@@ -2,7 +2,7 @@ package com.jeltechnologies.sheetmusic.library;
 
 import java.io.Serializable;
 
-public class Folder implements Serializable {
+public class Folder implements Serializable, Comparable<Folder> {
     private static final long serialVersionUID = 160568644792584173L;
     private String path;
     private String title;
@@ -43,6 +43,11 @@ public class Folder implements Serializable {
 	builder.append(files);
 	builder.append("]");
 	return builder.toString();
+    }
+
+    @Override
+    public int compareTo(Folder o) {
+	return o.title.compareTo(title) * -1;
     }
 
 }
