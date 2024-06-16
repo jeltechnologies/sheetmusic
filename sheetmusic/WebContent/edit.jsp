@@ -375,8 +375,7 @@ function doPostUpdate() {
 
 function postEditChangeCompleted(data) {
 	console.log(data);
-	let book = data.responseJSON;
-	let url = "book.jsp?id=" + book.fileChecksum;
+	let url = "book.jsp?id=" + data.fileChecksum;
 	window.location.replace(url);
 }
 
@@ -544,6 +543,7 @@ function initTextFieldPressUps() {
 </head>
 
 <body>
+	<screenmusic:main-menu showSearch="false" />
 	<div class="headerWithTitle">
 		
 			<i class="bi bi-arrow-left-short clickButton" onclick="javascript: window.history.back();"></i>

@@ -6,8 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jeltechnologies.screenmusic.autocomplete.AutoCompleteSearchServlet;
-import com.jeltechnologies.screenmusic.autocomplete.AutoCompleteSeriesServlet;
+import com.jeltechnologies.screenmusic.autocomplete.AutoCompleteSearchBean;
+import com.jeltechnologies.screenmusic.autocomplete.AutoCompleteSeriesBean;
 import com.jeltechnologies.screenmusic.extractedfilestorage.RefreshBookThread;
 import com.jeltechnologies.screenmusic.jsonpayloads.LibraryDeleteOperation;
 import com.jeltechnologies.screenmusic.jsonpayloads.LibraryMoveOperation;
@@ -21,6 +21,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/library/book")
 public class LibraryBookServlet extends BaseServlet {
@@ -157,8 +158,9 @@ public class LibraryBookServlet extends BaseServlet {
     }
 
     private void invalidateCache(HttpServletRequest request) {
-	CachedBean.flush(request.getServletContext(), AutoCompleteSearchServlet.CACHE_BEAN);
-	CachedBean.flush(request.getServletContext(), AutoCompleteSeriesServlet.CACHE_BEAN);
+	HttpSession session = request.getSession();
+	session.removeAttribute(AutoCompleteSearchBean.class.getName());
+	session.removeAttribute(AutoCompleteSeriesBean.class.getName());
     }
 
 }

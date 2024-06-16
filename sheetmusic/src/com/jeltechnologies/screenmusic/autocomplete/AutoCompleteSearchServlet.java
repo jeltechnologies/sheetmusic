@@ -17,10 +17,6 @@ import jakarta.servlet.http.HttpSession;
 public class AutoCompleteSearchServlet extends BaseServlet {
     private static final long serialVersionUID = -5198486290304998499L;
 
-    public static final String CACHE_BEAN = "autocomplete-cache-search";
-
-    private static final String SESSION_BEAN = AutoCompleteSearchBean.class.getName();
-
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	String query = request.getParameter("query");
 	respondJson(response, getAutoCompleteSuggestions(request, query));
@@ -28,10 +24,10 @@ public class AutoCompleteSearchServlet extends BaseServlet {
 
     private AutoCompleteResponse getAutoCompleteSuggestions(HttpServletRequest request, String query) throws JsonProcessingException {
 	HttpSession session = request.getSession();
-	AutoCompleteBean bean = (AutoCompleteBean) session.getAttribute(SESSION_BEAN);
+	AutoCompleteBean bean = (AutoCompleteBean) session.getAttribute(AutoCompleteSearchBean.class.getName());
 	if (bean == null) {
 	    bean = new AutoCompleteSearchBean(getUser(request), new ScreenMusicContext(request));
-	    session.setAttribute(SESSION_BEAN, bean);
+	    session.setAttribute(AutoCompleteSearchBean.class.getName(), bean);
 	}
 	return bean.getAutoCompleteSuggestions(query);
     }
