@@ -476,9 +476,32 @@ function tryFixTitlesOnPages() {
 			newArtist = title.substring(split + 3).trim();
 			newArtist = removeLeadingNumbers(newArtist);
 		}
+		
+		newArtist = capitalizeFirstLetterOfWords(artist);
 		$("#" + txtBoxTitleId).val(newTitle);
 		$("#" + txtArtistId).val(newArtist);
 	}
+}
+
+function capitalizeFirstLetterOfWords(sentence) {
+	const words = sentence.split(" ");
+	let result = "";
+	let first = true;
+	for (let i = 0; i < words.length; i++) {
+		let word = words[i];
+		if (word.length > 0) {
+			if (first) {
+				first = false;
+			} else {
+				result += " ";
+			}
+			result += word[0].toUpperCase();
+			if (word.length > 1) {
+				result += word.substr(1).toLowerCase();
+			}
+		}
+	}
+	return result;
 }
 
 
